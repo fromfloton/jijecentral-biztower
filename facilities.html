@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>부대시설 | 평택지제센트럴타워</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  /* 부대시설 페이지(모바일 전용 진입): index.html의 다이닝/부대시설 섹션을 그대로 재사용해서
+     단독 화면으로 표시. index.html의 모바일 전용 "Featured/다이닝/Location 섹션 숨김" 규칙 중
+     다이닝 부분만 이 페이지에서 되돌림 (location.html이 Location 섹션에 쓰는 것과 동일한 패턴) */
+  /* min-height:100vh을 강제하면 콘텐츠(다이닝 섹션) 아래 배경색(#c7d7e0)이 안 채워진 빈 공간이
+     생기고 그 자리가 흰색으로 보임 — 층별 상세페이지에서 겪었던 것과 동일한 버그라 동일하게 제거 */
+  main#content { display: block !important; }
+  /* 다이닝 섹션(.chain-ma-inner)의 배경색과 동일하게 맞춰서, 뷰포트가 콘텐츠보다 길 때
+     하단 고정 탭바 사이에 생기는 빈 공간이 흰색으로 튀지 않고 자연스럽게 이어지도록 함 */
+  body { background-color: #c7d7e0; }
+  /* PC에서 chain-ma-inner(다이닝 섹션)만 1.5배로 — html 자체를 키우면 rem 단위를 쓰는
+     헤더/전체 페이지가 같이 커져서 로고와 겹치는 부작용이 있었음. rem은 항상 <html> 기준이라
+     .chain-ma-inner에 font-size를 줘도 자식들(rem 단위)엔 영향이 없으므로, 이 서브트리만
+     통째로 확대하는 zoom을 사용 — 헤더/다른 요소는 전혀 안 건드림 */
+  @media (min-width: 768px) {
+    .chain-ma-dining .chain-ma-inner { zoom: 1.5; }
+  }
+  .chain-ma-dining.chain-ma-dining-lottehotels { display: block !important; }
+  /* 고정 헤더에 콘텐츠가 가려지지 않도록 + 위쪽 여백 확보 (location.html과 동일 값) */
+  .chain-ma-dining { margin-top: 5rem !important; }
+  /* 5rem은 location.html 기준인데, location.html은 :before 스페이서(14.6rem)를 안 지웠고
+     여긴 바로 아래서 지움 — 그 몫까지 margin-top에 넣어야 헤더(desktop 약 153.9px)를 제대로
+     벗어남. 층별 상세페이지에서 실측으로 확정한 값(20.5rem)과 동일하게 맞춤 (PC 전용) */
+  @media (min-width: 768px) {
+    .chain-ma-dining { margin-top: 20.5rem !important; }
+  }
+  .chain-ma-dining:before { display: none !important; }
+  /* "Eat, Work, Relax | 미식, 업무, 휴식"이 모바일에서 두 줄로 떨어졌음 —
+     .type02가 모바일에서 display:block이라 줄바꿈됨. 다른 페이지들(제조형 | 8F 등)처럼
+     한 줄로 통일 (모바일 전용) */
+  @media (max-width: 767px) {
+    .chain-ma-dining .chain-ma-tit-row .chain-ma-sub-tit08.type02 { display: inline-block; }
+  }
+
+  /* 모바일 메뉴에서 "부대시설" 탭을 눌러 들어왔을 때 뚝 끊기지 않도록, 본문(#container)만
+     가운데서 양옆으로 열리듯 드러나며 페이드인 (층별 상세페이지와 동일한 모션).
+     header/하단탭바/플로팅 버튼은 #container 밖이라 애니메이션 영향 없이 계속 그 자리에 있음 */
+  @keyframes pageFadeIn {
+    from { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); }
+    to { opacity: 1; clip-path: inset(0 0 0 0); -webkit-clip-path: inset(0 0 0 0); }
+  }
+  #container { animation: pageFadeIn .6s ease-out both; }
+</style>
+</head>
+<body>
+<div id="wrap" class="chain-ma-lottehotels-wrap chain-ma-thegrandlotte-wrap">
+<header id="header" class="chain-logo-ctr">
+  <div class="header-wrap">
+    <div class="header-inner">
+      <div class="header-group01">
+<div class="header-group01">
+<div class="header-group01-row">
+<div class="header-group01-col">
+<div class="header-logo-wrap">
+<div>
+
+<a class="btn-chain-header" href="index.html">
+<img alt="CENTRAL TOWER 평택지제 센트럴타워" class="chain-logo-img" src="assets/images/brand/logo-chain.png"/>
+</a>
+</div>
+</div>
+</div>
+<div class="header-group01-col">
+<div class="header-util-wrap">
+</div>
+<div class="header-alarm-wrap">
+</div>
+<div class="header-allmenu-wrap">
+<button class="btn-hamburger" type="button">
+<i aria-hidden="true" class="ico ico-hamburger">
+</i>
+<span class="hide-txt">
+         전체메뉴
+        </span>
+</button>
+<div class="dimmed">
+</div>
+<div class="header-allmenu-container">
+<div class="allmenu-util-header">
+<div class="row">
+<div class="allmenu-home">
+<a class="go-home" href="index.html">
+<i aria-label="홈으로 바로가기" class="ico ico-header-home" role="img">
+</i>
+</a>
+</div>
+</div>
+<div class="row">
+<div class="ico-box header-allmenu-close-wrap">
+<button class="btn-header-allmenu-close" type="button">
+<span class="hide-txt">
+             전체메뉴 닫기
+            </span>
+<i aria-hidden="true" class="ico ico-close">
+</i>
+</button>
+</div>
+</div>
+</div>
+<div class="allmenu-scroll-area">
+<div class="top-wrapper">
+<div class="allmenu-major-menu">
+<a class="btn btn-list" href="#">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-intro">
+</i>
+<span class="btn-txt">
+             더 센트럴타워 지제 소개
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="features.html">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-premium">
+</i>
+<span class="btn-txt">
+             더 프리미엄
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="benefit.html">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-benefit">
+</i>
+<span class="btn-txt">
+             더 베네핏
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="facilities.html">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-facility">
+</i>
+<span class="btn-txt">
+             부대시설
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="#">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-notice">
+</i>
+<span class="btn-txt">
+             공지사항
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="#">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-member">
+</i>
+<span class="btn-txt">
+             입주회원사
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="location.html">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-location">
+</i>
+<span class="btn-txt">
+             오시는길
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+</div>
+</div>
+<div class="allmenu-2depth-area height-auto">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="header-promo-banner"><img alt="SRT, KTX, GTX-A 서울까지 22분! 월세 20부터 시작! 오늘이 가장 저렴!" loading="lazy" src="assets/banner.gif"/></div></div>
+</div>
+      </div>
+      <div class="header-group02">
+        <div class="header-group02-row">
+<div class="header-chain-logo-wrap"><div class="chain-logo-area"><a class="btn-chain-header" href="index.html"><img alt="CENTRAL TOWER 평택지제 센트럴타워" class="chain-logo-img" src="assets/images/brand/logo-chain.png" /></a></div></div>
+          <div class="header-group02-col">
+            <div class="gnb-wrap">
+<nav aria-label="메인 메뉴" class="gnb-area">
+<ul aria-label="뎁스 1" class="gnb-list-1">
+<li class="gnb-depth-1">
+<a class="gnb-link-1" href="#" target="_self">
+<span class="gnb-tit-1">
+     더 센트럴타워 지제 소개
+    </span>
+</a>
+
+</li>
+<li class="gnb-depth-1">
+<a class="gnb-link-1" href="index.html#premium" target="_self">
+<span class="gnb-tit-1">
+     더프리미엄
+    </span>
+</a>
+
+</li>
+<li class="gnb-depth-1">
+<a class="gnb-link-1" href="benefit.html" target="_self">
+<span class="gnb-tit-1">
+     더베네핏
+    </span>
+</a>
+
+</li>
+<li class="gnb-depth-1">
+<a class="gnb-link-1" href="index.html#facilities" target="_self">
+<span class="gnb-tit-1">
+     부대시설
+    </span>
+</a>
+
+</li>
+<li class="gnb-depth-1"><a class="gnb-link-1" href="#" target="_self"><span class="gnb-tit-1">
+     공지사항
+    </span></a></li>
+<li class="gnb-depth-1">
+<a class="gnb-link-1" href="#" target="_self">
+<span class="gnb-tit-1">
+     입주회원사
+    </span>
+</a>
+
+</li>
+</ul>
+</nav>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div id="container">
+  <main id="content">
+<div class="chain-ma-wrap chain-ma-dining chain-ma-dining-lottehotels" id="facilities"><div class="chain-ma-inner"><div class="chain-ma-cont"><div class="chain-ma-tit-wrap row-type"><div class="chain-ma-tit-row"><h2 class="chain-ma-tit01">Eat, Work, Relax</h2><div class="chain-ma-sub-tit08 type02">미식, 업무, 휴식</div></div><a aria-label="전체보기" class="btn btn-text01 btn-arrow-hover" data-ref-href="/seoul-grand/ko/dining" href="#"><span class="btn-txt">전체보기</span><i aria-hidden="true" class="ico ico-btn-arrow circle"></i></a></div><div class="component-chips align-left" id="chips-aw1rtjya7m9"><div aria-label="콘텐츠 메뉴" class="chips-row" role="list"><div class="component-chip-btn on"><button aria-pressed="true" class="chip-btn chip-btn bg-brown" data-code="dining" data-name="dining" type="button"><span class="chip-txt"><span class="chip-txt">다이닝</span></span></button></div><div class="component-chip-btn"><button aria-pressed="false" class="chip-btn chip-btn bg-brown" data-code="facilities" data-name="facilities" type="button"><span class="chip-txt"><span class="chip-txt">부대시설</span></span></button></div></div></div><div class="chain-ma-swiper"><div class="component-swiper swiper-type-dining dining"><div class="swiper-container swiper-initialized swiper-horizontal swiper-backface-hidden"><div class="swiper-wrapper" id="swiper-wrapper-10a6f7210f5af3cdf7"><div aria-label="1 / 5" class="swiper-slide swiper-slide-active swiper-slide-visible swiper-slide-fully-visible" data-swiper-slide-index="0" role="group"><div class="component-card"><a aria-label="멜팅포레스트" class="card-inner" data-ref-href="/seoul-grand/ko/dining/restaurant-pierre-gagnaire-a-seoul" href="#"><div class="card-inner"><div class="card-top hover-guide scroll click"><div class="card-img motion-scale"><img alt="멜팅포레스트 한식뷔페" aria-label="멜팅포레스트" loading="lazy" src="assets/features/res1.jpeg"/></div></div><div class="card-info"><div class="card-info-unit"><div class="info-unit-txt"># 한식뷔페</div></div><div class="card-info-tit"><div class="info-tit">멜팅포레스트</div></div><div class="card-info-sub"><div class="info-sub">프리미엄 무한리필 한식뷔페 '멜팅포레스트'에서 정성 가득한 다양한 메뉴를 편안하게 즐겨보세요.</div></div></div></div></a></div></div><div aria-label="2 / 5" class="swiper-slide swiper-slide-next swiper-slide-visible swiper-slide-fully-visible" data-swiper-slide-index="1" role="group"><div class="component-card"><a aria-label="신의주 찹쌀순대" class="card-inner" data-ref-href="/seoul-grand/ko/dining/restaurant-mugunghwa" href="#"><div class="card-inner"><div class="card-top hover-guide scroll click"><div class="card-img motion-scale"><img alt="신의주 찹쌀순대" aria-label="신의주 찹쌀순대" loading="lazy" src="assets/features/res2.png"/></div></div><div class="card-info"><div class="card-info-unit"><div class="info-unit-txt"># 식당</div></div><div class="card-info-tit"><div class="info-tit">신의주 찹쌀순대</div></div><div class="card-info-sub"><div class="info-sub">얼큰한 순대국과 푸짐한 순대 한 상, 오랜 손맛으로 준비하는 '신의주 찹쌀순대'.</div></div></div></div></a></div></div><div aria-label="3 / 5" class="swiper-slide swiper-slide-visible" data-swiper-slide-index="2" role="group"><div class="component-card"><a aria-label="메가커피 오픈예정" class="card-inner" data-ref-href="/seoul-grand/ko/dining/restaurant-toh-lim" href="#"><div class="card-inner"><div class="card-top hover-guide scroll click"><div class="card-img motion-scale"><img alt="메가커피 오픈예정" aria-label="메가커피" loading="lazy" src="assets/features/res3_card.jpg"/></div></div><div class="card-info"><div class="card-info-unit"><div class="info-unit-txt"># 카페</div></div><div class="card-info-tit"><div class="info-tit">메가커피 오픈예정</div></div><div class="card-info-sub"><div class="info-sub">빅사이즈, 진한 2샷의 메가커피가 곧 만나요. Big Size, 2 Shot 시그니처를 기대해주세요.<br/></div></div></div></div></a></div></div><div aria-label="4 / 5" class="swiper-slide" data-swiper-slide-index="3" role="group" tabindex="-1"><div class="component-card"><a aria-label="인생손두부" class="card-inner" data-ref-href="/seoul-grand/ko/dining/restaurant-momoyama" href="#"><div class="card-inner"><div class="card-top hover-guide scroll click"><div class="card-img motion-scale"><img alt="더센트럴타워 지제 - 모모야마" aria-label="모모야마" loading="lazy" src="assets/cms/6707-1-1440-evt-LTSE.jpg"/></div></div><div class="card-info"><div class="card-info-unit"><div class="info-unit-txt"># 식당</div></div><div class="card-info-tit"><div class="info-tit">인생손두부</div></div><div class="card-info-sub"><div class="info-sub">제철 식재료를 활용한 요리를 통해 계절감을 느끼게 하는 셰프의 코스와 도심 최고 38층의 탁 트인 전망을 자랑하는 오마카세</div></div></div></div></a></div></div><div aria-label="5 / 5" class="swiper-slide" data-swiper-slide-index="4" role="group" tabindex="-1"><div class="component-card"><a aria-label="라세느" class="card-inner" data-ref-href="/seoul-grand/ko/dining/restaurant-la-seine" href="#"><div class="card-inner"><div class="card-top hover-guide scroll click"><div class="card-img motion-scale"><img alt="더센트럴타워 지제 - 라세느" aria-label="라세느" loading="lazy" src="assets/cms/180821-2-2000-din-seoul-hotel.jpg"/></div></div><div class="card-info"><div class="card-info-unit"><div class="info-unit-txt"># 식당</div></div><div class="card-info-tit"><div class="info-tit">라세느</div></div><div class="card-info-sub"><div class="info-sub">더센트럴타워 지제의 세련된 업스케일 뷔페 레스토랑, '라세느'에서는 전문 셰프들이 즉석에서 선보이는 200여 가지의 요리를 경험할 수 있습니다. 아시안식, 일식, 양식, 누들, 콜드밀(Cold Meal), 코리안 그릴, 디저트, BAR 등 8개의 라이브 섹션에서 다양한 요리를 맛볼 수 있는 스튜디오 타입의 라이브 키친입니다.</div></div></div></div></a></div></div><template id="facilityCardsTemplate"><div aria-label="1 / 3" class="swiper-slide" data-swiper-slide-index="0" role="group"><div class="component-card"><a aria-label="남녀 샤워실" class="card-inner" href="#"><div class="card-inner"><div class="card-top hover-guide scroll click"><div class="card-img motion-scale"><img alt="남녀 샤워실" aria-label="남녀 샤워실" loading="lazy" src="assets/cms/shower.png"/></div></div><div class="card-info"><div class="card-info-unit"><div class="info-unit-txt"># 수리중</div></div><div class="card-info-tit"><div class="info-tit">남녀 샤워실</div></div><div class="card-info-sub"><div class="info-sub">층별 이용 가능한 남녀 샤워실을 정비하고 있습니다. 쾌적한 이용을 위해 준비 중이니 조금만 기다려주세요.</div></div></div></div></a></div></div><div aria-label="2 / 3" class="swiper-slide" data-swiper-slide-index="1" role="group"><div class="component-card"><a aria-label="피트니스 센터" class="card-inner" href="#"><div class="card-inner"><div class="card-top hover-guide scroll click"><div class="card-img motion-scale"><img alt="피트니스 센터" aria-label="피트니스 센터" loading="lazy" src="assets/cms/fitness.png"/></div></div><div class="card-info"><div class="card-info-unit"><div class="info-unit-txt"># 준비중</div></div><div class="card-info-tit"><div class="info-tit">피트니스 센터</div></div><div class="card-info-sub"><div class="info-sub">지하층에 피트니스 센터를 마련할 예정입니다. 오픈 일정은 추후 공지사항을 통해 안내드립니다.</div></div></div></div></a></div></div><div aria-label="3 / 3" class="swiper-slide" data-swiper-slide-index="2" role="group"><div class="component-card"><a aria-label="스크린골프장" class="card-inner" href="#"><div class="card-inner"><div class="card-top hover-guide scroll click"><div class="card-img motion-scale"><img alt="스크린골프장" aria-label="스크린골프장" loading="lazy" src="assets/cms/golf.png"/></div></div><div class="card-info"><div class="card-info-unit"><div class="info-unit-txt"># 준비중</div></div><div class="card-info-tit"><div class="info-tit">스크린골프장</div></div><div class="card-info-sub"><div class="info-sub">지하층에 스크린골프장을 마련할 예정입니다. 오픈 일정은 추후 공지사항을 통해 안내드립니다.</div></div></div></div></a></div></div></template><div class="swiper-controls black"><div class="swiper-progressbar"><div class="swiper-progressbar-inner" style="width: 33.3333%;"></div></div><div class="swiper-btn-wrap"><button aria-disabled="true" aria-label="이전 슬라이드로 이동" class="swiper-button-prev swiper-button-disabled" disabled="" type="button"></button><button aria-disabled="false" aria-label="다음 슬라이드로 이동" class="swiper-button-next" type="button"></button></div><div class="swiper-fraction"><span class="swiper-pagination-current">1</span><span class="slash">/</span><span class="swiper-pagination-total">3</span></div><div class="swiper-pagination"></div></div></div></div></div></div></div>
+</div>
+
+  </main>
+</div>
+
+<div aria-owns="reservationFixedWrap" class="floating-wrap"><nav aria-label="유틸리티 메뉴" class="floating-util"><ul class="floating-lists"><li class="floating-list top-hide" style="opacity: 1; height: auto;"><a aria-label="상단으로 이동" class="btn btn-top" href="#" style="opacity: 1; display: inline-flex;"><i aria-hidden="true" class="ico ico-btn-top"></i></a></li></ul></nav></div>
+
+<div class="reservation-fixed-wrap" id="reservationFixedWrap"><a aria-label="전화 문의 031-111-1111" class="btn btn-call-fab" href="tel:031-111-1111"><i aria-hidden="true" class="ico ico-btn-call-fab"></i><span class="btn-txt">031-111-1111</span></a><a aria-label="카카오톡 상담" class="btn btn-kakao-fab" href="http://pf.kakao.com/_FUPrX" target="_blank" rel="noopener"><i aria-hidden="true" class="ico ico-btn-kakao-fab"></i><span class="btn-txt">카카오톡 상담</span></a><button aria-label="로그인" class="btn btn-login" id="loginFabBtn" type="button"><i aria-hidden="true" class="ico ico-btn-login"></i><span class="btn-txt">로그인</span></button></div>
+
+
+<nav class="mobile-tabbar" aria-label="모바일 하단 메뉴">
+  <a class="mobile-tabbar-item" href="tel:031-111-1111"><i class="tabbar-ico tabbar-ico-call" aria-hidden="true"></i>전화상담</a>
+  <a class="mobile-tabbar-item" href="http://pf.kakao.com/_FUPrX" target="_blank" rel="noopener"><i class="tabbar-ico tabbar-ico-kakao" aria-hidden="true"></i>카카오톡</a>
+  <a class="mobile-tabbar-item" href="login.html"><i class="tabbar-ico tabbar-ico-login" aria-hidden="true"></i>로그인</a>
+</nav>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

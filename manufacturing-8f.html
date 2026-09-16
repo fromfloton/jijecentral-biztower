@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>제조형 | 평택지제센트럴타워</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  /* min-height:100vh을 강제하면 콘텐츠(도면 이미지)가 짧은 층별 페이지에서 본문과 푸터 사이에
+     뷰포트 높이만큼 빈 공간이 생기고, 왼쪽 세로 bar도 그 빈 공간 위에서 붕 뜬 것처럼 보임 —
+     features.html은 콘텐츠 자체가 원래 길어서 이 문제가 안 보였을 뿐, 높이 강제는 필요 없음 */
+  main#content { display: block !important; }
+  body { background-color: #fff; }
+  /* features.html에서 층수 버튼을 누르면 흰 배경이 가운데서 양옆으로 퍼지며 화면을 덮은 뒤
+     이 페이지로 넘어옴(js/main.js goToFloorPage, page-split-backdrop) — 그 "가운데서 양옆으로
+     퍼지는" 모션을 도착 페이지에서도 그대로 이어서, 본문이 가운데서 양옆으로 열리듯 드러나며 페이드인.
+     header/footer/floating 버튼류는 페이지 넘어가도 계속 그 자리에 있는 것처럼 연속성을 유지해야
+     하므로 body 전체가 아니라 #container(= main#content를 감싸는 본문 영역)만 애니메이션 적용 */
+  @keyframes pageFadeIn {
+    from { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); }
+    to { opacity: 1; clip-path: inset(0 0 0 0); -webkit-clip-path: inset(0 0 0 0); }
+  }
+  #container { animation: pageFadeIn .6s ease-out both; }
+  .chain-ma-feature-detail-page { margin-top: 9.6rem !important; }
+  .chain-ma-feature-detail-page:before { display: none !important; }
+
+  /* chain-ma-tit-wrap.row-type 안에 chain-ma-tit-row와 같은 행에 두 번째 flex 아이템으로 배치 —
+     row-type이 justify-content:space-between이라 자동으로 오른쪽 끝(=cont 오른쪽 패딩)에 붙고,
+     왼쪽의 chain-ma-tit-row가 cont 왼쪽 패딩에 붙는 것과 정확히 대칭됨(PC/모바일 공용, 별도 마진 계산 불필요) */
+  /* 글씨 크기는 같은 행의 chain-ma-sub-tit08과 동일한 기준(모바일 1.4rem/데스크톱 2.4rem)으로 —
+     독자적인 2.8rem 고정값을 쓰면 title-row 안 다른 요소들과 크기가 안 맞았음 */
+  .feature-detail-back {
+    display: flex; align-items: center; gap: .6rem; text-decoration: none; background: none; border: 0;
+    font-size: 1.4rem !important; color: #666; padding: 0; cursor: pointer; flex: 0 0 auto; white-space: nowrap;
+  }
+  @media (min-width: 768px) {
+    .feature-detail-back { font-size: 2.4rem !important; }
+  }
+  .feature-detail-back-ico {
+    display: inline-block; width: 1.6rem; height: 1.6rem;
+    background-repeat: no-repeat; background-position: center;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23666' stroke-width='1.2' d='M15 19l-7-7 7-7'/%3E%3C/svg%3E");
+  }
+  /* 왼쪽 브랜드 라벨 세로줄 — features.html의 chain-ma-brand-wrap과 동일한 패턴 (PC 전용) */
+  .chain-ma-feature-detail-page .chain-ma-brand-wrap {
+    position: absolute; left: 0; top: 0; bottom: 0; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    width: 8.8rem; background-color: #fff; border-right: 1px solid #816c5b;
+  }
+  .chain-ma-feature-detail-page .chain-ma-brand-wrap .brand-labels {
+    width: 8.8rem; display: flex; align-items: center; justify-content: center;
+    writing-mode: vertical-rl; white-space: nowrap;
+    font-size: 1.6rem; line-height: 2.8rem; color: #816c5b;
+    font-family: anth, Pretendard Variable, Noto Sans SC, Noto Sans Myanmar, Noto Sans Arabic, sans-serif;
+    letter-spacing: -.02em;
+  }
+  @media (max-width: 767px) {
+    .chain-ma-feature-detail-page .chain-ma-brand-wrap { display: none; }
+  }
+  /* features.html의 chain-ma-tit01과 동일한 폰트 스타일로 맞춤 (PC/모바일 공용 —
+     override 없으면 폰트 스택 끝이 serif라 Pretendard 로드 지연/실패 시 한글이 명조체로 보임) */
+  .chain-ma-feature-detail-page .chain-ma-tit-wrap.row-type .chain-ma-tit01 {
+    font-family: anth, Pretendard Variable, Noto Sans SC, Noto Sans Myanmar, Noto Sans Arabic, sans-serif;
+    letter-spacing: -.02em;
+  }
+  /* 층수 표시(8F 등)는 features.html의 "featured"와 동일하게 작고 연한 기본 스타일로 되돌림
+     (한때 타이틀과 같은 크기로 키웠었는데 features.html과 다르게 튀어서 사용자가 되돌려달라고 함) —
+     아래 chain-ma-cont * {font-size:2rem!important} 블록이 더 세게 덮어써서 그냥 두면 여전히
+     2rem이 되므로, 같은 !important + 더 높은 명시도로 기본값(모바일 1.4rem/데스크톱 2.4rem)을 강제 */
+  .chain-ma-feature-detail-page .chain-ma-tit-row .chain-ma-sub-tit08 {
+    font-size: 1.4rem !important; line-height: 2.6rem;
+  }
+  @media (min-width: 768px) {
+    .chain-ma-feature-detail-page .chain-ma-tit-row .chain-ma-sub-tit08 {
+      font-size: 2.4rem !important; line-height: 4rem;
+    }
+  }
+  .feature-detail-desc { font-size: 1.4rem; line-height: 2.4rem; color: #666; margin-top: 1.2rem; }
+  /* 알약(chip) 스타일 없애고 세로로 한 줄씩, 빨간 체크마크 + 글자만 (2026-09-16 변경) —
+     features.html의 feature-select-guide(안내 문구)와 동일한 페이드인 등장 효과 적용 */
+  @keyframes featureGuideFadeIn {
+    from { opacity: 0; transform: translateY(.8rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  /* features.html "원하시는 공간을 눌러서 살펴보세요"와 동일한 연한 eyebrow 안내문구 —
+     사이트 전체 일관성을 위해 같은 클래스명/값 재사용 */
+  .feature-select-guide {
+    font-size: 1.4rem; line-height: 2.2rem; color: #777; margin-top: 1.2rem;
+    opacity: 0; animation: featureGuideFadeIn .6s ease-out both;
+  }
+  @media (max-width: 767px) {
+    .feature-select-guide { margin-left: 2rem; }
+  }
+  @media (min-width: 768px) {
+    .feature-select-guide { font-size: 2.8rem; line-height: 4rem; }
+  }
+  .feature-detail-specs {
+    display: flex; flex-direction: column; gap: .5rem; list-style: none;
+    margin: 1.6rem 0 0; padding: 0; margin-left: 0;
+    opacity: 0; animation: featureGuideFadeIn .6s ease-out both;
+  }
+  @media (max-width: 767px) {
+    .feature-detail-specs { margin: 1.6rem 1.6rem 0; }
+  }
+  .feature-detail-specs li {
+    display: flex; align-items: center; gap: .8rem;
+    font-size: 1.6rem; font-weight: 700; color: #333;
+  }
+  /* word-break:keep-all을 쓰면 "지식산업센터(섹션오피스)"처럼 공백이 하나도 없는 라벨은
+     끊을 지점이 전혀 없다고 판단돼 줄바꿈이 안 되고 넘칠 수 있어 overflow-wrap만 사용 */
+  .feature-detail-specs li span { min-width: 0; overflow-wrap: break-word; }
+  .feature-detail-specs li:before {
+    content: ""; width: 1.8rem; height: 1.8rem; flex: 0 0 auto;
+    background-repeat: no-repeat; background-position: center;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23e5342a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+  }
+  .feature-detail-img { margin-top: 2.4rem; border-radius: .8rem; overflow: hidden; background: #fafafa; }
+  .feature-detail-img img { display: block; width: 100%; height: auto; }
+
+  @media (min-width: 768px) {
+    /* max-width/센터링/여백은 wrap이 아니라 cont에 줘야 함 — wrap 자체에 주면 wrap이 먼저
+       좁아지고 센터링되면서, 그 안의 chain-ma-brand-wrap(left:0 절대배치)도 같이 안쪽으로
+       밀려버려 뷰포트 왼쪽 끝에 붙지 않는 버그가 있었음 (features.html은 cont에만 줌) */
+    /* 21.6rem이었을 때 헤더 바로 밑과 본문 사이에 약 8px(≈1.1rem)만큼 불필요하게 더 밀려
+       있었음 — location.html(header bottom과 거의 0px 차이로 붙음)과 실측 비교해서 보정 */
+    .chain-ma-feature-detail-page { margin-top: 20.5rem !important; }
+    /* features.html의 .chain-ma-features .chain-ma-cont와 동일한 값(145rem / 좌우 비대칭 패딩)으로 통일 */
+    .chain-ma-feature-detail-page .chain-ma-cont {
+      max-width: 145rem; margin: 0 auto; padding: 5rem 2rem 0 1rem;
+    }
+    .feature-detail-specs li { font-size: 2.2rem; gap: 1.2rem; }
+    .feature-detail-specs li:before { width: 2.4rem; height: 2.4rem; }
+    .feature-detail-img { max-width: 120rem; margin: 3.2rem auto 0; }
+  }
+</style>
+</head>
+<body>
+<div id="wrap" class="chain-ma-lottehotels-wrap chain-ma-thegrandlotte-wrap">
+<header id="header" class="chain-logo-ctr">
+  <div class="header-wrap">
+    <div class="header-inner">
+      <div class="header-group01">
+<div class="header-group01">
+<div class="header-group01-row">
+<div class="header-group01-col">
+<div class="header-logo-wrap">
+<div>
+
+<a class="btn-chain-header" href="index.html">
+<img alt="CENTRAL TOWER 평택지제 센트럴타워" class="chain-logo-img" src="assets/images/brand/logo-chain.png"/>
+</a>
+</div>
+</div>
+</div>
+<div class="header-group01-col">
+<div class="header-util-wrap">
+</div>
+<div class="header-alarm-wrap">
+</div>
+<div class="header-allmenu-wrap">
+<button class="btn-hamburger" type="button">
+<i aria-hidden="true" class="ico ico-hamburger">
+</i>
+<span class="hide-txt">
+         전체메뉴
+        </span>
+</button>
+<div class="dimmed">
+</div>
+<div class="header-allmenu-container">
+<div class="allmenu-util-header">
+<div class="row">
+<div class="allmenu-home">
+<a class="go-home" href="index.html">
+<i aria-label="홈으로 바로가기" class="ico ico-header-home" role="img">
+</i>
+</a>
+</div>
+</div>
+<div class="row">
+<div class="ico-box header-allmenu-close-wrap">
+<button class="btn-header-allmenu-close" type="button">
+<span class="hide-txt">
+             전체메뉴 닫기
+            </span>
+<i aria-hidden="true" class="ico ico-close">
+</i>
+</button>
+</div>
+</div>
+</div>
+<div class="allmenu-scroll-area">
+<div class="top-wrapper">
+<div class="allmenu-major-menu">
+<a class="btn btn-list" href="#">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-intro">
+</i>
+<span class="btn-txt">
+             더 센트럴타워 지제 소개
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="features.html">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-premium">
+</i>
+<span class="btn-txt">
+             더 프리미엄
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="benefit.html">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-benefit">
+</i>
+<span class="btn-txt">
+             더 베네핏
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="facilities.html">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-facility">
+</i>
+<span class="btn-txt">
+             부대시설
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="#">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-notice">
+</i>
+<span class="btn-txt">
+             공지사항
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="#">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-member">
+</i>
+<span class="btn-txt">
+             입주회원사
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+<a class="btn btn-list" href="location.html">
+<i aria-hidden="true" class="ico ico-allmenu ico-allmenu-location">
+</i>
+<span class="btn-txt">
+             오시는길
+            </span>
+<i aria-hidden="true" class="ico ico-arrow-right">
+</i>
+</a>
+</div>
+</div>
+<div class="allmenu-2depth-area height-auto">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="header-promo-banner"><img alt="SRT, KTX, GTX-A 서울까지 22분! 월세 20부터 시작! 오늘이 가장 저렴!" loading="lazy" src="assets/banner.gif"/></div></div>
+</div>
+      </div>
+      <div class="header-group02">
+        <div class="header-group02-row">
+<div class="header-chain-logo-wrap"><div class="chain-logo-area"><a class="btn-chain-header" href="index.html"><img alt="CENTRAL TOWER 평택지제 센트럴타워" class="chain-logo-img" src="assets/images/brand/logo-chain.png" /></a></div></div>
+          <div class="header-group02-col">
+            <div class="gnb-wrap">
+<nav aria-label="메인 메뉴" class="gnb-area">
+<ul aria-label="뎁스 1" class="gnb-list-1">
+<li class="gnb-depth-1">
+<a class="gnb-link-1" href="#" target="_self">
+<span class="gnb-tit-1">
+     더 센트럴타워 지제 소개
+    </span>
+</a>
+
+</li>
+<li class="gnb-depth-1">
+<a class="gnb-link-1" href="index.html#premium" target="_self">
+<span class="gnb-tit-1">
+     더프리미엄
+    </span>
+</a>
+
+</li>
+<li class="gnb-depth-1">
+<a class="gnb-link-1" href="benefit.html" target="_self">
+<span class="gnb-tit-1">
+     더베네핏
+    </span>
+</a>
+
+</li>
+<li class="gnb-depth-1">
+<a class="gnb-link-1" href="index.html#facilities" target="_self">
+<span class="gnb-tit-1">
+     부대시설
+    </span>
+</a>
+
+</li>
+<li class="gnb-depth-1"><a class="gnb-link-1" href="#" target="_self"><span class="gnb-tit-1">
+     공지사항
+    </span></a></li>
+<li class="gnb-depth-1">
+<a class="gnb-link-1" href="#" target="_self">
+<span class="gnb-tit-1">
+     입주회원사
+    </span>
+</a>
+
+</li>
+</ul>
+</nav>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div id="container">
+  <main id="content">
+<div class="chain-ma-wrap chain-ma-feature-detail-page">
+<div class="chain-ma-brand-wrap"><p class="brand-labels">PYEONGTAEK JIJE</p></div>
+<div class="chain-ma-inner">
+<div class="chain-ma-cont">
+<div class="chain-ma-tit-wrap row-type">
+<div class="chain-ma-tit-row">
+<h2 class="chain-ma-tit01">제조형</h2>
+<div class="chain-ma-sub-tit08">8F</div>
+</div>
+<a class="feature-detail-back" href="features.html"><i class="feature-detail-back-ico" aria-hidden="true"></i>목록으로</a>
+</div>
+<p class="feature-select-guide">이 층의 평면도와 시설 정보를 확인해보세요</p>
+
+<ul class="feature-detail-specs"><li><span>지식산업센터(제조형)</span></li><li><span>층고 : 6m</span></li><li><span>드라이브 인 시스템</span></li><li><span>도어 투 도어 시스템</span></li><li><span>화물용 엘리베이터</span></li></ul>
+<div class="feature-detail-img"><img src="img/crop/8f.png" alt="제조형 8F 평면도" loading="lazy" /></div>
+</div>
+</div>
+</div>
+  </main>
+</div>
+
+<div aria-owns="reservationFixedWrap" class="floating-wrap"><nav aria-label="유틸리티 메뉴" class="floating-util"><ul class="floating-lists"><li class="floating-list top-hide" style="opacity: 1; height: auto;"><a aria-label="상단으로 이동" class="btn btn-top" href="#" style="opacity: 1; display: inline-flex;"><i aria-hidden="true" class="ico ico-btn-top"></i></a></li></ul></nav></div>
+
+<div class="reservation-fixed-wrap" id="reservationFixedWrap"><a aria-label="전화 문의 031-111-1111" class="btn btn-call-fab" href="tel:031-111-1111"><i aria-hidden="true" class="ico ico-btn-call-fab"></i><span class="btn-txt">031-111-1111</span></a><a aria-label="카카오톡 상담" class="btn btn-kakao-fab" href="http://pf.kakao.com/_FUPrX" target="_blank" rel="noopener"><i aria-hidden="true" class="ico ico-btn-kakao-fab"></i><span class="btn-txt">카카오톡 상담</span></a><button aria-label="로그인" class="btn btn-login" id="loginFabBtn" type="button"><i aria-hidden="true" class="ico ico-btn-login"></i><span class="btn-txt">로그인</span></button></div>
+
+
+<nav class="mobile-tabbar" aria-label="모바일 하단 메뉴">
+  <a class="mobile-tabbar-item" href="tel:031-111-1111"><i class="tabbar-ico tabbar-ico-call" aria-hidden="true"></i>전화상담</a>
+  <a class="mobile-tabbar-item" href="http://pf.kakao.com/_FUPrX" target="_blank" rel="noopener"><i class="tabbar-ico tabbar-ico-kakao" aria-hidden="true"></i>카카오톡</a>
+  <a class="mobile-tabbar-item" href="login.html"><i class="tabbar-ico tabbar-ico-login" aria-hidden="true"></i>로그인</a>
+</nav>
+
+<footer id="footer"><div class="footer-wrap"><div class="footer-inner"><div class="footer-group01"><div class="footer-logo-wrap"><span class="footer-logo01">CENTRAL TOWER <br/> &amp; JIJE</span></div><div class="footer-store-pc-wrap"><a aria-label="App Store" class="footer-store-ios" href="https://itunes.apple.com/kr/app/lotte-hotels-resorts/id1063239345" rel="noopener noreferrer" target="_blank" title="새창 열림"></a><a aria-label="Google Play" class="footer-store-aos" href="https://play.google.com/store/apps/details?id=com.lottehotels.global" rel="noopener noreferrer" target="_blank" title="새창 열림"></a></div></div><div class="footer-group02"><div class="footer-group02-row"><div class="footer-group02-col"><div class="footer-menu-wrap"><div class="footer-menu-tit">DESTINATION</div><ul class="footer-menu-list"><li><a href="#">더 센트럴타워 지제 소개</a></li><li><a href="#">부서별 연락처</a></li><li><a href="#">고객의 소리</a></li></ul></div></div><div class="footer-group02-col"><div class="footer-menu-wrap"><div class="footer-menu-tit">COMPANY</div><ul class="footer-menu-list"><li><a href="#">채용</a></li><li><a href="#">지속가능경영</a></li><li><a href="#">제휴 제안</a></li></ul></div></div><div class="footer-group02-col"><div class="footer-menu-wrap"><div class="footer-menu-tit">HOTLINE</div><ul class="footer-menu-list"><li><a class="" data-ref-href="/global/ko/report/gate" href="#">신문고</a></li><li><a class="" data-ref-href="/global/ko/report/compliance/about/lotte-hotel" href="#">컴플라이언스</a></li></ul></div></div><div class="footer-group02-col"><div class="footer-menu-wrap"><div class="footer-menu-tit">TERMS &amp; POLICY</div><ul class="footer-menu-list"><li><a class="" data-ref-href="/global/ko/terms/privilege-rewards-terms" href="#">약관 및 정책</a></li></ul></div></div><div class="footer-group02-col etc"><div class="footer-menu-chain-cont"><div class="footer-menu-row"><span>17843, 경기 평택시 세교산단로 37</span><span>031-692-4311~4</span></div><div class="footer-menu-row"><span>평택지제센트럴타워 관리단</span><span>사업자등록번호 114-82-81711</span></div></div><div class="footer-menu-wrap"><ul class="footer-menu-list"><li><a href="#">센트럴 관리단</a></li><li><a href="#">소유자</a></li><li><a href="#">개인정보처리방침</a></li><li><a href="#">FAQ</a></li><li><a href="#">쿠키설정</a></li></ul></div></div></div><div class="footer-group02-row"><div class="footer-group02-col"><div class="footer-menu-wrap"><div class="footer-menu-tit">CONTACT</div><div class="footer-menu-cont"><div class="footer-menu-row chain-row"><span class="footer-hotel-name">더 센트럴타워 지제</span><span>17843, 경기 평택시 세교산단로 37</span><span><span class="menu-label">연락처</span>031-692-4311~4</span><span><span class="menu-label">이메일</span>central4311@naver.com</span></div><div class="footer-menu-row"><span>17843, 경기 평택시 세교산단로 37</span><span>031-692-4311~4</span><span>평택지제센트럴타워 관리단</span><span>사업자등록번호 114-82-81711</span></div></div></div><div class="footer-family-wrap"><div class="component-collapse" data-state="close" id="id-collapse-i3i7jjq0vi"><button aria-controls="id-collapse-content-i3i7jjq0vi" aria-expanded="false" class="collapse-tit" id="id-collapse-title-i3i7jjq0vi" type="button"><span class="collapse-txt"><span class="txt"> Family Site </span></span><span class="collapse-ico"><i aria-hidden="true" class="ico ico-plus"></i></span></button><div aria-hidden="true" aria-labelledby="id-collapse-title-i3i7jjq0vi" class="collapse-content" id="id-collapse-content-i3i7jjq0vi" role="region" style="height: 0px; display: none;"><div class="collapse-content-inner"><ul><li><a class="" href="https://www.hotellotte.com/ko/main" rel="noopener noreferrer" target="_blank" title="새창 열림">㈜호텔롯데</a></li><li><a class="" href="http://www.lotte.co.kr/main.do" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데지주</a></li><li><a class="" href="http://www.lottecon.co.kr/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데건설</a></li><li><a class="" href="https://www.lotteglogis.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데글로벌로지스</a></li><li><a class="" href="http://www.lottelem.co.kr/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데기공</a></li><li><a class="" href="https://www.lotterental.com" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데렌탈</a></li><li><a class="" href="https://www.lotteineos.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데이네오스화학</a></li><li><a class="" href="https://kor.lps.lottedfs.com/kr/customer/brchInfo?prSiteBrchCd=6" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데면세점제주</a></li><li><a class="" href="http://www.lottemembers.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데멤버스(L.POINT)</a></li><li><a class="" href="https://www.lottepnd.com/main.do" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데물산</a></li><li><a class="" href="https://www.lotteskyhill.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데스카이힐CC</a></li><li><a class="" href="https://www.lotteintl.co.kr/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데상사</a></li><li><a class="" href="https://www.lottecinema.co.kr/NLCHS" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데시네마</a></li><li><a class="" href="http://www.asahibeerk.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데아사히주류</a></li><li><a class="" href="https://www.lotteal.co.kr/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데알미늄</a></li><li><a class="" href="http://www.lottemcc.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데엠시시</a></li><li><a class="" href="http://www.lotteworld.com/gate.html" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데월드</a></li><li><a class="" href="https://lottepeoplenetworks.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데피플네트웍스</a></li><li><a class="" href="https://www.lotte.co.kr/business/compDetail.do?compCd=L414" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데인재개발원</a></li><li><a class="" href="http://www.lottedevelop.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데자산개발</a></li><li><a class="" href="http://www.giantsclub.com" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데자이언츠</a></li><li><a class="" href="https://www.lottefinechem.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데정밀화학</a></li><li><a class="" href="https://www.lotteinnovate.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데이노베이트</a></li><li><a class="" href="https://www.lottewellfood.com" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데웰푸드</a></li><li><a class="" href="http://www.lottejtb.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데제이티비</a></li><li><a class="" href="https://www.lotternd.com/KOR/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데중앙연구소</a></li><li><a class="" href="https://recruit.lotte.co.kr/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데채용사이트</a></li><li><a class="" href="https://mall.lottechilsung.co.kr" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데칠성음료(음료BG)</a></li><li><a class="" href="https://company.lottechilsung.co.kr/kor/main/index.do" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데칠성음료</a></li><li><a class="" href="http://www.lottecap.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데캐피탈</a></li><li><a class="" href="https://www.lottechem.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데케미칼</a></li><li><a class="" href="http://www.e-himart.co.kr" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데하이마트</a></li><li><a class="" href="https://www.lotteon.com/p/display/main/lotteon" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데쇼핑e커머스</a></li><li><a class="" data-ref-href="/global/ko" href="#" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데호텔</a></li><li><a class="" href="https://www.daehong.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">대홍기획</a></li><li><a class="" href="https://kr.canon/" rel="noopener noreferrer" target="_blank" title="새창 열림">캐논코리아</a></li><li><a class="" href="http://www.7-eleven.co.kr/" rel="noopener noreferrer" target="_blank" title="새창 열림">코리아세븐</a></li><li><a class="" href="https://company.fujifilm.co.kr/index.asp" rel="noopener noreferrer" target="_blank" title="새창 열림">한국후지필름</a></li><li><a class="" href="https://www.lotteshopping.com/main/main?cstr=" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데백화점</a></li><li><a class="" href="https://lottemartzetta.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데마트</a></li><li><a class="" href="https://company.lottemart.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데슈퍼</a></li><li><a class="" href="http://www.lottehomeshopping.com/user/main/index.lotte" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데홈쇼핑</a></li><li><a class="" href="https://store-kr.uniqlo.com/display/displayShop.lecs?storeNo=83&amp;siteNo=50706&amp;displayNo=NQ1A13A07&amp;displayMallNo=NQ1&amp;stonType=P" rel="noopener noreferrer" target="_blank" title="새창 열림">FRL코리아</a></li><li><a class="" href="https://www.lottecm.com/ko/main.do" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데건설 CM사업본부</a></li><li><a class="" href="https://www.lottemuseum.com/" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데뮤지엄</a></li><li><a class="" href="https://www.lotte.co.kr/csv/main.do" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데사회공헌사이트</a></li><li><a class="" href="https://www.lottegrs.com/main.jsp" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데지알에스</a></li><li><a class="" href="http://www.lotteconcerthall.com/kor" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데콘서트홀</a></li><li><a class="" data-ref-href="/busan-hotel/ko" href="#" rel="noopener noreferrer" target="_blank" title="새창 열림">부산롯데호텔</a></li><li><a class="" href="https://kor.lps.lottedfs.com/kr/customer/brchInfo?prSiteBrchCd=5" rel="noopener noreferrer" target="_blank" title="새창 열림">롯데면세점부산</a></li></ul></div></div></div></div><div class="footer-privacy-mo-wrap"><a class="footer-privacy-item" data-ref-href="/global/ko/privacy/lotte-hotel-and-resort" href="#" type="button"><span class="footer-privacy-txt bold">개인정보 처리방침</span></a></div><div class="footer-store-mo-wrap"></div><div class="footer-sns-wrap"></div></div></div></div><div class="footer-group03"><div class="footer-swiper-wrap"><div class="component-swiper swiper-footer"><div class="swiper-container swiper-initialized swiper-horizontal swiper-backface-hidden"><div class="swiper-wrapper" id="swiper-wrapper-a056765ef3dadd46" style="transform: translate3d(0px, 0px, 0px);"><div aria-hidden="false" aria-label="1 / 10" class="swiper-slide swiper-slide-active swiper-slide-visible swiper-slide-fully-visible" data-swiper-slide-index="0" role="group"><a aria-hidden="false" class="footer-link-item" data-ref-href="/global/ko/brands/about/signiel" href="#" rel="noopener noreferrer" target="_blank" title="새창 열림"><span class="footer-link-tit"><img alt="더센트럴타워 지제 - SIGNIEL - 더센트럴타워 지제 공식 홈페이지 | 서울 도심에서 누리는 품격 있는 럭셔리 호텔" aria-label="SIGNIEL" loading="lazy" src="assets/cms/img_flogo_signiel.png"/></span></a></div><div aria-hidden="false" aria-label="2 / 10" class="swiper-slide swiper-slide-next swiper-slide-visible swiper-slide-fully-visible" data-swiper-slide-index="1" role="group"><a aria-hidden="false" class="footer-link-item" data-ref-href="/global/ko/brands/about/the-grand-lotte" href="#" rel="noopener noreferrer" target="_blank" title="새창 열림"><span class="footer-link-tit"><img alt="더센트럴타워 지제 - THE GRAND LOTTE - 더센트럴타워 지제 공식 홈페이지 | 서울 도심에서 누리는 품격 있는 럭셔리 호텔" aria-label="THE GRAND LOTTE" loading="lazy" src="assets/cms/img_flogo_lotte_thegrandlotte.png"/></span></a></div><div aria-hidden="false" aria-label="3 / 10" class="swiper-slide swiper-slide-visible swiper-slide-fully-visible" data-swiper-slide-index="2" role="group"><a aria-hidden="false" class="footer-link-item" data-ref-href="/global/ko/brands/about/lotte-hotel" href="#" rel="noopener noreferrer" target="_blank" title="새창 열림"><span class="footer-link-tit"><img alt="더센트럴타워 지제 - LOTTE HOTELS - 더센트럴타워 지제 공식 홈페이지 | 서울 도심에서 누리는 품격 있는 럭셔리 호텔" aria-label="LOTTE HOTELS" loading="lazy" src="assets/cms/img_flogo_lotte_hotels.png"/></span></a></div><div aria-hidden="false" aria-label="4 / 10" class="swiper-slide swiper-slide-visible swiper-slide-fully-visible" data-swiper-slide-index="3" role="group"><a aria-hidden="false" class="footer-link-item" data-ref-href="/global/ko/brands/about/lotte-l7" href="#" rel="noopener noreferrer" target="_blank" title="새창 열림"><span class="footer-link-tit"><img alt="더센트럴타워 지제 - L7 HOTEL by LOTTE - 더센트럴타워 지제 공식 홈페이지 | 서울 도심에서 누리는 품격 있는 럭셔리 호텔" aria-label="L7 HOTEL by LOTTE" loading="lazy" src="assets/cms/img_flogo_l7_by_lottehotels.png"/></span></a></div><div aria-hidden="false" aria-label="5 / 10" class="swiper-slide swiper-slide-visible swiper-slide-fully-visible" data-swiper-slide-index="4" role="group"><a aria-hidden="false" class="footer-link-item" data-ref-href="/global/ko/brands/about/breev" href="#" rel="noopener noreferrer" target="_blank" title="새창 열림"><span class="footer-link-tit"><img alt="더센트럴타워 지제 - BREEV by LOTTE HOTELS - 더센트럴타워 지제 공식 홈페이지 | 서울 도심에서 누리는 품격 있는 럭셔리 호텔" aria-label="BREEV by LOTTE HOTELS" loading="lazy" src="assets/cms/img_flogo_BREEV.png"/></span></a></div><div aria-hidden="false" aria-label="6 / 10" class="swiper-slide swiper-slide-visible swiper-slide-fully-visible" data-swiper-slide-index="5" role="group"><a aria-hidden="false" class="footer-link-item" data-ref-href="/global/ko/brands/about/lotte-city" href="#" rel="noopener noreferrer" target="_blank" title="새창 열림"><span class="footer-link-tit"><img alt="더센트럴타워 지제 - LOTTE CITY HOTELS - 더센트럴타워 지제 공식 홈페이지 | 서울 도심에서 누리는 품격 있는 럭셔리 호텔" aria-label="LOTTE CITY HOTELS" loading="lazy" src="assets/cms/img_flogo_lotte_city_hotels.png"/></span></a></div><div aria-hidden="false" aria-label="7 / 10" class="swiper-slide swiper-slide-visible swiper-slide-fully-visible" data-swiper-slide-index="6" role="group"><a aria-hidden="false" class="footer-link-item" data-ref-href="/global/ko/brands/about/artvillas" href="#" rel="noopener noreferrer" target="_blank" title="새창 열림"><span class="footer-link-tit"><img alt="더센트럴타워 지제 - ART VILLAS - 더센트럴타워 지제 공식 홈페이지 | 서울 도심에서 누리는 품격 있는 럭셔리 호텔" aria-label="ART VILLAS" loading="lazy" src="assets/cms/img_flogo_artvillas (1).png"/></span></a></div><div aria-hidden="false" aria-label="8 / 10" class="swiper-slide swiper-slide-visible swiper-slide-fully-visible" data-swiper-slide-index="7" role="group"><a aria-hidden="false" class="footer-link-item" data-ref-href="/global/ko/brands/about/lotte-resort" href="#" rel="noopener noreferrer" target="_blank" title="새창 열림"><span class="footer-link-tit"><img alt="더센트럴타워 지제 - LOTTE RESORT - 더센트럴타워 지제 공식 홈페이지 | 서울 도심에서 누리는 품격 있는 럭셔리 호텔" aria-label="LOTTE RESORT" loading="lazy" src="assets/cms/img_flogo_lotte_resort.png"/></span></a></div><div aria-hidden="false" aria-label="9 / 10" class="swiper-slide swiper-slide-visible" data-swiper-slide-index="8" role="group"><a aria-hidden="false" class="footer-link-item" href="https://www.lottesrc.com/vl" rel="noopener noreferrer" target="_blank" title="새창 열림"><span class="footer-link-tit"><img alt="더센트럴타워 지제 - VL - 더센트럴타워 지제 공식 홈페이지 | 서울 도심에서 누리는 품격 있는 럭셔리 호텔" aria-label="VL" loading="lazy" src="assets/cms/img_flogo_vl.png"/></span></a></div><div aria-hidden="false" aria-label="10 / 10" class="swiper-slide" data-swiper-slide-index="9" role="group"><a aria-hidden="false" class="footer-link-item" href="https://www.lotteskyhill.com" rel="noopener noreferrer" target="_blank" title="새창 열림"><span class="footer-link-tit"><img alt="더센트럴타워 지제 - LOTTE SKYHILL CC - 더센트럴타워 지제 공식 홈페이지 | 서울 도심에서 누리는 품격 있는 럭셔리 호텔" aria-label="LOTTE SKYHILL CC" loading="lazy" src="assets/cms/img_flogo_lotte_skyhill_cc (1).png"/></span></a></div></div><span aria-atomic="true" aria-live="assertive" class="swiper-notification"></span></div><div class="swiper-controls type03"><div aria-label="이전 슬라이드로 이동" class="swiper-button-prev" role="button"></div><div aria-label="다음 슬라이드로 이동" class="swiper-button-next" role="button"></div></div></div></div></div></div></div></footer>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

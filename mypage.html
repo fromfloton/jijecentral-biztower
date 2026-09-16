@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>소유자 라운지 (클론 · 벤치마킹용)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  body { background: #f4f4f6; font-family: Pretendard, -apple-system, BlinkMacSystemFont, sans-serif; }
+  .mypage-wrap { min-height: 100vh; padding: 4rem 2rem; }
+  .mypage-inner { max-width: 72rem; margin: 0 auto; }
+
+  .mypage-header {
+    background: #242750; color: #fff; border-radius: .8rem; padding: 3.2rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.6rem;
+    margin-bottom: 2.4rem;
+  }
+  .mypage-header .who { font-size: 3.6rem; font-weight: 600; }
+  .mypage-header .who .role-badge {
+    display: inline-block; font-size: 2.4rem; font-weight: 500; margin-left: 1.6rem;
+    background: #a97b5f; color: #fff; padding: .6rem 1.8rem; border-radius: 99px; vertical-align: middle;
+  }
+  .mypage-header .room { font-size: 2.52rem; color: #cfd0e0; margin-top: .8rem; }
+  .mypage-header .btn-logout {
+    background: transparent; border: 1px solid rgba(255,255,255,.4); color: #fff;
+    font-size: 2.6rem; padding: 1.8rem 3.6rem; border-radius: .4rem; cursor: pointer;
+  }
+  .mypage-header .btn-logout:hover { background: rgba(255,255,255,.12); }
+
+  .file-panel { background: #fff; border-radius: .8rem; padding: 3.2rem; box-shadow: 0 .4rem 1.6rem rgba(0,0,0,.06); }
+  .file-panel h2 { font-size: 3.06rem; font-weight: 600; color: #111; margin-bottom: 2rem; }
+
+  .file-state { font-size: 2.52rem; color: #888; padding: 3rem 0; text-align: center; }
+
+  .breadcrumb { font-size: 2.34rem; color: #888; margin-bottom: 1.6rem; }
+  .breadcrumb .crumb { cursor: pointer; }
+  .breadcrumb .crumb:last-child { color: #222; font-weight: 500; cursor: default; }
+  .breadcrumb .crumb:hover:not(:last-child) { text-decoration: underline; }
+  .breadcrumb .crumb-sep { margin: 0 .4rem; color: #ccc; }
+
+  .file-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 1.6rem;
+    padding: 2.4rem 0; border-bottom: 1px solid #eee;
+  }
+  .file-row:last-child { border-bottom: 0; }
+  .file-row .file-info { min-width: 0; }
+  .file-row .file-name { font-size: 2.4rem; color: #222; font-weight: 500; word-break: break-all; }
+  .file-row .folder-icon { font-size: 3rem; vertical-align: middle; }
+  .file-row.folder-row { cursor: pointer; }
+  .file-row.folder-row:hover { background: #faf8f6; margin: 0 -1rem; padding: 2.4rem 1rem; border-radius: .4rem; }
+  .file-row .file-meta { font-size: 2.16rem; color: #999; margin-top: .4rem; }
+  .file-row .cat-badge {
+    display: inline-block; font-size: 2.2rem; padding: .4rem 1.4rem; border-radius: 99px;
+    margin-right: .6rem; vertical-align: middle;
+  }
+  .cat-badge.A { background: #f1e6dd; color: #916849; }
+  .cat-badge.O { background: #eaeaf2; color: #4c4f70; }
+
+  .btn-download {
+    flex: 0 0 auto; background: #816c5b; color: #fff; border: 0; border-radius: .4rem;
+    font-size: 2.6rem; padding: 1.8rem 3.6rem; cursor: pointer; white-space: nowrap;
+  }
+  .btn-download:hover { background: #916849; }
+  .btn-download:disabled { opacity: .5; cursor: default; }
+
+  .back-home { display: block; text-align: center; margin-top: 2.4rem; font-size: 2.34rem; color: #999; }
+</style>
+</head>
+<body>
+<div class="mypage-wrap">
+  <div class="mypage-inner">
+    <div class="mypage-header">
+      <div>
+        <div class="who"><span id="whoName">-</span>님<span class="role-badge" id="whoRole">-</span></div>
+        <div class="room" id="whoRoom"></div>
+      </div>
+      <button class="btn-logout" id="logoutBtn">로그아웃</button>
+    </div>
+
+    <div class="file-panel">
+      <h2>소유자 라운지</h2>
+      <div id="breadcrumb" class="breadcrumb"></div>
+      <div id="fileListArea">
+        <p class="file-state">불러오는 중...</p>
+      </div>
+    </div>
+
+    <a class="back-home" href="index.html">← 홈으로 돌아가기</a>
+  </div>
+</div>
+
+<div class="reservation-fixed-wrap" id="reservationFixedWrap"><a aria-label="전화 문의 031-111-1111" class="btn btn-call-fab" href="tel:031-111-1111"><i aria-hidden="true" class="ico ico-btn-call-fab"></i><span class="btn-txt">031-111-1111</span></a><a aria-label="카카오톡 상담" class="btn btn-kakao-fab" href="http://pf.kakao.com/_FUPrX" target="_blank" rel="noopener"><i aria-hidden="true" class="ico ico-btn-kakao-fab"></i><span class="btn-txt">카카오톡 상담</span></a></div>
+
+<script src="js/main.js"></script>
+<script>
+  var LOGIN_API_URL = "https://script.google.com/macros/s/AKfycbx4AHPDi1kCK1onl9mD0NreXwgX4SV2JKXdxHWbj8Ygu1h53MB4l7VDsRyy0DnVOgWx/exec";
+  var CAT_LABEL = { A: "관리위원전용", O: "소유자전용" };
+
+  var token = sessionStorage.getItem("ptc_token");
+  if (!sessionStorage.getItem("ptc_logged_in") || !token) {
+    location.href = "login.html";
+  }
+
+  document.getElementById("whoName").textContent = sessionStorage.getItem("ptc_name") || "회원";
+  document.getElementById("whoRole").textContent = CAT_LABEL[sessionStorage.getItem("ptc_role")] || "소유자";
+  var room = sessionStorage.getItem("ptc_room");
+  document.getElementById("whoRoom").textContent = room ? (room + "호") : "";
+
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    sessionStorage.clear();
+    location.href = "login.html";
+  });
+
+  function callApi(payload) {
+    return fetch(LOGIN_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    }).then(function (res) { return res.json(); });
+  }
+
+  function base64ToBlob(base64, mimeType) {
+    var byteChars = atob(base64);
+    var byteNumbers = new Array(byteChars.length);
+    for (var i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
+    return new Blob([new Uint8Array(byteNumbers)], { type: mimeType });
+  }
+
+  function formatDate(d) {
+    try {
+      var dt = new Date(d);
+      return dt.getFullYear() + "." + String(dt.getMonth() + 1).padStart(2, "0") + "." + String(dt.getDate()).padStart(2, "0");
+    } catch (e) { return ""; }
+  }
+
+  var pathStack = []; // [{id, name}, ...] 현재 들어와 있는 폴더 경로
+
+  function renderBreadcrumb() {
+    var bc = document.getElementById("breadcrumb");
+    if (pathStack.length === 0) {
+      // 최상위에서는 위 타이틀("소유자 라운지")과 중복되므로 표시 안 함
+      bc.innerHTML = "";
+      bc.style.display = "none";
+      return;
+    }
+    bc.style.display = "";
+    var html = '<span class="crumb" data-idx="-1">소유자 라운지</span>';
+    pathStack.forEach(function (p, idx) {
+      html += '<span class="crumb-sep">›</span><span class="crumb" data-idx="' + idx + '">' + p.name.replace(/</g, "&lt;") + '</span>';
+    });
+    bc.innerHTML = html;
+    bc.querySelectorAll(".crumb").forEach(function (el) {
+      el.addEventListener("click", function () {
+        var idx = parseInt(el.getAttribute("data-idx"), 10);
+        pathStack = idx === -1 ? [] : pathStack.slice(0, idx + 1);
+        loadCurrent();
+      });
+    });
+  }
+
+  function loadCurrent() {
+    renderBreadcrumb();
+    var area = document.getElementById("fileListArea");
+    area.innerHTML = '<p class="file-state">불러오는 중...</p>';
+    var current = pathStack[pathStack.length - 1];
+
+    callApi({ action: "list", token: token, folderId: current ? current.id : null })
+      .then(function (data) {
+        if (!data.success) {
+          if (data.message === "unauthorized") {
+            sessionStorage.clear();
+            location.href = "login.html";
+            return;
+          }
+          area.innerHTML = '<p class="file-state">접근할 수 없는 폴더입니다.</p>';
+          return;
+        }
+        renderItems(data.items);
+      })
+      .catch(function () {
+        area.innerHTML = '<p class="file-state">목록을 불러오지 못했습니다. 새로고침 해주세요.</p>';
+      });
+  }
+
+  function renderItems(items) {
+    var area = document.getElementById("fileListArea");
+    if (!items || items.length === 0) {
+      area.innerHTML = '<p class="file-state">등록된 자료가 없습니다.</p>';
+      return;
+    }
+
+    var folders = items.filter(function (it) { return it.type === "folder"; });
+    var files = items.filter(function (it) { return it.type === "file"; });
+    area.innerHTML = "";
+
+    folders.forEach(function (f) {
+      var row = document.createElement("div");
+      row.className = "file-row folder-row";
+      var badge = f.category ? ('<span class="cat-badge ' + f.category + '">' + (CAT_LABEL[f.category] || f.category) + '</span>') : "";
+      row.innerHTML =
+        '<div class="file-info"><div class="file-name"><span class="folder-icon">📁</span> ' + f.name.replace(/</g, "&lt;") + '</div>' +
+        '<div class="file-meta">' + badge + '</div></div>';
+      row.addEventListener("click", function () {
+        pathStack.push({ id: f.id, name: f.name });
+        loadCurrent();
+      });
+      area.appendChild(row);
+    });
+
+    files.forEach(function (f) {
+      var row = document.createElement("div");
+      row.className = "file-row";
+      var badge = f.category ? ('<span class="cat-badge ' + f.category + '">' + (CAT_LABEL[f.category] || f.category) + '</span>') : "";
+
+      var info = document.createElement("div");
+      info.className = "file-info";
+      info.innerHTML =
+        '<div class="file-name">' + f.name.replace(/</g, "&lt;") + '</div>' +
+        '<div class="file-meta">' + badge + formatDate(f.updated) + '</div>';
+
+      var btn = document.createElement("button");
+      btn.className = "btn-download";
+      btn.textContent = "다운로드";
+      btn.addEventListener("click", function () { downloadFile(f.id, btn); });
+
+      row.appendChild(info);
+      row.appendChild(btn);
+      area.appendChild(row);
+    });
+  }
+
+  function downloadFile(fileId, btn) {
+    btn.disabled = true;
+    btn.textContent = "받는 중...";
+    callApi({ action: "download", token: token, fileId: fileId })
+      .then(function (data) {
+        if (!data.success) {
+          alert("다운로드에 실패했습니다.");
+          return;
+        }
+        var blob = base64ToBlob(data.base64, data.mimeType || "application/octet-stream");
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = data.name || "file";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 3000);
+      })
+      .catch(function () {
+        alert("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = "다운로드";
+      });
+  }
+
+  loadCurrent();
+</script>
+</body>
+</html>

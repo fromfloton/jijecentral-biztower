@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>로그인 (클론 · 벤치마킹용)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  .login-page-wrap {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: #242750; padding: 4rem 2rem;
+  }
+  .login-box {
+    width: 100%; max-width: 40rem; background: #fff; border-radius: .8rem;
+    padding: 4.8rem 3.2rem; box-shadow: 0 1.6rem 4rem rgba(0,0,0,.3);
+  }
+  .login-box .brand { text-align: center; font-size: 1.6rem; font-weight: 600; letter-spacing: .05em; margin-bottom: 3.2rem; color: #111; }
+  .login-box h1 { font-size: 2.2rem; font-weight: 600; margin-bottom: .8rem; color: #111; }
+  .login-box .desc { font-size: 1.4rem; color: #666; margin-bottom: 3.2rem; }
+  .login-box label { display: block; font-size: 1.3rem; color: #444; margin-bottom: .6rem; }
+  .login-box .field { margin-bottom: 2rem; }
+  .login-box input[type="text"], .login-box input[type="password"] {
+    width: 100%; height: 5.2rem; border: 1px solid #ddd; border-radius: .4rem;
+    padding: 0 1.6rem; font-size: 1.5rem; font-family: inherit;
+  }
+  .login-box input:focus { outline: none; border-color: #a97b5f; }
+  .login-box .btn-submit {
+    width: 100%; height: 5.4rem; background: #816c5b; color: #fff; border: 0; border-radius: .4rem;
+    font-size: 1.6rem; font-weight: 600; cursor: pointer; margin-top: 1.2rem;
+  }
+  .login-box .btn-submit:hover { background: #916849; }
+  .login-box .links { display: flex; justify-content: center; gap: 1.6rem; margin-top: 2.4rem; font-size: 1.3rem; color: #777; }
+  .login-box .links a { color: #777; text-decoration: underline; text-underline-offset: .3rem; }
+  .login-box .back-home { display: block; text-align: center; margin-top: 3.2rem; font-size: 1.3rem; color: #999; }
+  .login-box .error-msg { display: none; font-size: 1.3rem; color: #d33; margin: -1rem 0 2rem; }
+  .login-box .error-msg.on { display: block; }
+  .login-box .btn-submit:disabled { opacity: .6; cursor: default; }
+  .login-box .welcome { text-align: center; }
+  .login-box .welcome .name { font-size: 1.9rem; font-weight: 600; color: #111; margin-bottom: .8rem; }
+  .login-box .welcome .sub { font-size: 1.4rem; color: #666; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="login-page-wrap">
+  <div class="login-box">
+    <div class="brand">평택지제센트럴 소유자 모임</div>
+    <div id="loginFormArea">
+      <h1>로그인</h1>
+      <p class="desc">소유자 회원 서비스를 이용하시려면 로그인해주세요.</p>
+      <p class="error-msg" id="loginError">아이디 또는 비밀번호가 일치하지 않습니다.</p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginId">아이디 (전화번호)</label>
+          <input type="text" id="loginId" name="loginId" autocomplete="username" placeholder="010-0000-0000" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label for="loginPw">비밀번호</label>
+          <input type="password" id="loginPw" name="loginPw" autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn-submit" id="loginSubmitBtn">로그인</button>
+      </form>
+      <div class="links">
+        <a href="#">아이디/비밀번호 찾기</a>
+      </div>
+    </div>
+    <div id="loginWelcomeArea" class="welcome" style="display:none;">
+      <p class="name"><span id="welcomeName"></span>님, 환영합니다</p>
+      <p class="sub">로그인이 확인되었습니다.<br/>소유자 전용 페이지는 순차적으로 오픈될 예정입니다.</p>
+    </div>
+    <a class="back-home" href="index.html">← 홈으로 돌아가기</a>
+  </div>
+</div>
+
+<div class="reservation-fixed-wrap" id="reservationFixedWrap"><a aria-label="전화 문의 031-111-1111" class="btn btn-call-fab" href="tel:031-111-1111"><i aria-hidden="true" class="ico ico-btn-call-fab"></i><span class="btn-txt">031-111-1111</span></a><a aria-label="카카오톡 상담" class="btn btn-kakao-fab" href="http://pf.kakao.com/_FUPrX" target="_blank" rel="noopener"><i aria-hidden="true" class="ico ico-btn-kakao-fab"></i><span class="btn-txt">카카오톡 상담</span></a></div>
+
+<script src="js/main.js"></script>
+<script>
+  var LOGIN_API_URL = "https://script.google.com/macros/s/AKfycbx4AHPDi1kCK1onl9mD0NreXwgX4SV2JKXdxHWbj8Ygu1h53MB4l7VDsRyy0DnVOgWx/exec";
+
+  var form = document.getElementById("loginForm");
+  var submitBtn = document.getElementById("loginSubmitBtn");
+  var errorMsg = document.getElementById("loginError");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    errorMsg.classList.remove("on");
+
+    var phone = document.getElementById("loginId").value.replace(/[^0-9]/g, "");
+    var password = document.getElementById("loginPw").value.trim();
+
+    if (!phone || !password) {
+      errorMsg.textContent = "아이디와 비밀번호를 입력해주세요.";
+      errorMsg.classList.add("on");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "확인 중...";
+
+    fetch(LOGIN_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ phone: phone, password: password })
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.success) {
+          sessionStorage.setItem("ptc_logged_in", "true");
+          sessionStorage.setItem("ptc_token", data.token || "");
+          sessionStorage.setItem("ptc_name", data.name || "");
+          sessionStorage.setItem("ptc_room", data.room || "");
+          sessionStorage.setItem("ptc_role", data.role || "O");
+
+          document.getElementById("welcomeName").textContent = data.name || "회원";
+          document.getElementById("loginFormArea").style.display = "none";
+          document.getElementById("loginWelcomeArea").style.display = "block";
+          setTimeout(function () { location.href = "mypage.html"; }, 900);
+        } else {
+          errorMsg.textContent = "아이디 또는 비밀번호가 일치하지 않습니다.";
+          errorMsg.classList.add("on");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "로그인";
+        }
+      })
+      .catch(function () {
+        errorMsg.textContent = "일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+        errorMsg.classList.add("on");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "로그인";
+      });
+  });
+</script>
+</body>
+</html>
