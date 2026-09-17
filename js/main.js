@@ -19,6 +19,27 @@
   updateHeaderScrollState();
 
   /* ---------------------------------------------------------
+   * 1-1. 헤더 실제 높이 → CSS 변수(--header-h)
+   *   .mobile-promo-banner(position:fixed)가 헤더 바로 밑에 붙어야 하는데,
+   *   헤더 높이를 rem으로 고정해두면 폰트 스케일링/기기별 렌더링 차이로 살짝
+   *   어긋날 수 있음 — 매번 실제 렌더된 높이를 재서 CSS 변수로 넘겨줌으로써
+   *   "항상 헤더 바로 밑"을 rem 숫자 없이 보장
+   * ------------------------------------------------------- */
+  function syncHeaderHeightVar() {
+    if (!header) return;
+    document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px");
+  }
+  syncHeaderHeightVar();
+  window.addEventListener("resize", syncHeaderHeightVar);
+  window.addEventListener("orientationchange", syncHeaderHeightVar);
+  if (window.ResizeObserver) {
+    new ResizeObserver(syncHeaderHeightVar).observe(header);
+  }
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(syncHeaderHeightVar);
+  }
+
+  /* ---------------------------------------------------------
    * 2. GNB 메가메뉴 드롭다운은 사용하지 않음
    *    (PC 헤더 로고와 겹쳐서 hover-open 동작 자체를 제거 — 상단 메뉴는 단순 링크로만 사용)
    * ------------------------------------------------------- */

@@ -1921,7 +1921,10 @@ body.menu-open { overflow: hidden; }
 
 @media (max-width: 767px) {
   .mobile-promo-banner {
-    display: block; position: fixed; left: 0; right: 0; top: 8rem; z-index: 2100;
+    /* top은 rem 고정값 대신 JS(main.js)가 헤더 실제 렌더 높이를 재서 넣어주는
+       --header-h 변수를 사용 — 헤더 높이가 폰트 스케일링/기기에 따라 달라져도
+       항상 헤더 바로 밑에 붙음. 8rem은 JS 실행 전(최초 페인트) 순간을 위한 대체값 */
+    display: block; position: fixed; left: 0; right: 0; top: var(--header-h, 8rem); z-index: 2100;
   }
   .mobile-promo-banner img { display: block; width: 100%; height: auto; }
 }
