@@ -2,6 +2,13 @@
 --swiper-navigation-size: 44px}
 
 *, :after, :before {box-sizing:border-box}
+/* overflow-x:hidden — 일부 페이지(features.html의 .feature-select-media 풀블리드 배경처럼
+   음수 margin으로 화면 양옆으로 의도적으로 삐져나가는 요소)가 실제 문서 폭을 뷰포트보다
+   넓게 만들면, 모바일 브라우저는 레이아웃 뷰포트(=position:fixed 요소의 기준폭) 자체를
+   그 초과분만큼 넓혀버림 — 그 결과 해당 페이지에서만 헤더(#header, position:fixed)가
+   실제 화면보다 넓게 그려져서 페이지마다 헤더의 가용폭이 달라지는 원인이 됐었음.
+   html에 이걸 걸어 레이아웃 뷰포트를 항상 실제 화면 폭으로 고정 */
+html, body {overflow-x:hidden}
 html {-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%;font-weight:400;-webkit-tap-highlight-color:transparent}
 html:lang(en), html:lang(ko) {font-family:Pretendard Variable,Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,Helvetica Neue,Segoe UI,Apple SD Gothic Neo,Noto Sans KR,Malgun Gothic,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,sans-serif}
 html:lang(ja) {font-family:Pretendard JP Variable,Pretendard JP,Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,Helvetica Neue,Segoe UI,Hiragino Sans,Apple SD Gothic Neo,Meiryo,Noto Sans JP,Noto Sans KR,Malgun Gothic,Osaka,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,sans-serif}
@@ -407,7 +414,13 @@ details {display:block}
 .component-swiper .swiper-fade .swiper-slide {transition-property:opacity;pointer-events:none}
 .component-swiper .swiper-fade .swiper-slide.swiper-slide-active {pointer-events:auto}
 [class^=btn-return-link] {padding:0 1rem}
-#header {position:fixed;top:0;width:100%;z-index:2200;transition:top .2s ease-out}
+#header {position:fixed;top:0;left:0;right:0;z-index:2200;transition:top .2s ease-out}
+/* width:100% 대신 left:0;right:0 사용 — position:fixed 요소의 width:100%는 페이지 어딘가에
+   가로 오버플로우(예: features.html의 풀블리드 .feature-select-media)가 있으면 그 초과분만큼
+   같이 늘어나서, 정작 넘치는 페이지에서만 헤더가 실제 화면보다 넓게 그려지는 부작용이 있었음
+   (실측: features.html에서만 header 폭이 진짜 뷰포트보다 20px 더 넓게 나와서 햄버거 버튼이
+   안 밀렸던 것 — 구조가 "옳았던" 게 아니라 우연히 여유 공간을 더 받았던 것). left/right 고정은
+   페이지 콘텐츠 오버플로우와 무관하게 항상 진짜 화면 폭에만 맞춰짐 */
 #header.scroll {top:-8rem}
 #header.on {z-index:3200}
 .header-wrap {width:100%}
@@ -1846,7 +1859,7 @@ body.menu-open { overflow: hidden; }
      390px 이상(아이폰 등 대부분의 실기기)에서는 여유가 충분해 문제없이 보였던 것.
      → 폭을 vw 기반 clamp로: 화면이 넉넉하면(약 390px~) 원래 크기(29.8rem=3.5rem 높이)
      그대로, 정말 좁은 화면에서만 비례해서 살짝 줄어들어 절대 넘치지 않도록 함 */
-  .header-wrap .btn-chain-header .chain-logo-img { height: auto; width: clamp(20rem, 79vw, 29.8rem); }
+  .header-wrap .btn-chain-header .chain-logo-img { height: auto; width: clamp(18rem, 75vw, 29.8rem); }
 
   /* 하단 탭바 글자색(흰색)에 맞춰 햄버거 아이콘도 흰색으로 */
   .ico-hamburger {
