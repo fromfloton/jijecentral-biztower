@@ -702,4 +702,28 @@
       if (!e.target.closest(".feature-select-item")) closeAll();
     });
   })();
+
+  /* ---------------------------------------------------------
+   * 스크롤 등장 애니메이션 (.scroll-reveal)
+   *   화면에 들어오는 시점에 .in-view 클래스를 붙여줌 — 실제 등장 효과(opacity/transform
+   *   전환)는 각 페이지 CSS(.scroll-reveal / .scroll-reveal.in-view)에서 정의.
+   *   여러 요소가 같이 나타날 때는 각 요소의 style.transitionDelay로 순서를 조절.
+   * ------------------------------------------------------- */
+  (function initScrollReveal() {
+    var items = document.querySelectorAll(".scroll-reveal");
+    if (!items.length) return;
+    if (!window.IntersectionObserver) {
+      items.forEach(function (el) { el.classList.add("in-view"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+    items.forEach(function (el) { io.observe(el); });
+  })();
 })();

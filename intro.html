@@ -70,14 +70,26 @@
   .intro-images { display: flex; flex-direction: column; gap: 2.4rem; margin-top: 2.4rem; }
   .intro-images img { display: block; width: 100%; height: auto; border-radius: .8rem; overflow: hidden; }
 
-  /* 배너: PC/모바일 이미지가 다름 — 화면 폭에 맞는 쪽만 표시, 나머지는 아예 안 보여줌
-     (다른 요소들처럼 #container 애니메이션 안에 같이 있어서 모바일/PC 동일하게 페이드인됨) */
-  .intro-banner-pc { display: none; }
-  .intro-banner-mo { display: block; }
+  /* 배너: PC/모바일 이미지가 다름 — 화면 폭에 맞는 쪽만 표시, 나머지는 아예 안 보여줌.
+     .intro-images img(위 규칙)가 display:block을 강제해서 명시도가 더 높은
+     .intro-banner-pc/.intro-banner-mo 단독 규칙을 덮어써버려 PC/모바일에서 배너가
+     동시에 2개 다 보이던 버그가 있었음 — .intro-images를 붙여 명시도를 그 규칙보다
+     높여서 확실히 이김 */
+  .intro-images .intro-banner-pc { display: none; }
+  .intro-images .intro-banner-mo { display: block; }
   @media (min-width: 768px) {
-    .intro-banner-pc { display: block; }
-    .intro-banner-mo { display: none; }
+    .intro-images .intro-banner-pc { display: block; }
+    .intro-images .intro-banner-mo { display: none; }
   }
+
+  /* 스크롤해서 화면에 들어올 때 이미지가 차례대로(스태거) 등장 — main.js의 범용
+     .scroll-reveal 옵저버가 in-view 클래스를 붙여줌. PC/모바일 배너는 둘 다 같은
+     "배너 자리"이므로 같은 지연시간(순서상 2번째)을 가짐 */
+  .intro-images .scroll-reveal {
+    opacity: 0; transform: translateY(3rem);
+    transition: opacity .7s ease-out, transform .7s ease-out;
+  }
+  .intro-images .scroll-reveal.in-view { opacity: 1; transform: translateY(0); }
 
   @media (min-width: 768px) {
     .chain-ma-intro-page { margin-top: 20.5rem !important; }
@@ -293,11 +305,11 @@
 </div>
 <p class="feature-select-guide">대한민국 반도체 산업의 중심, 더 센트럴타워 지제를 소개합니다</p>
 <div class="intro-images">
-<img src="img/building-img3.jpg" alt="더 센트럴타워 지제 소개 이미지" loading="lazy" />
-<img class="intro-banner-pc" src="assets/introbanner.gif" alt="SRT 지제역 호재! 4톤차량 이용가능한 화물용 엘레베이터완비!" loading="lazy" />
-<img class="intro-banner-mo" src="assets/mintrobanner.gif" alt="SRT 지제역 호재! 4톤차량 이용가능한 화물용 엘레베이터완비!" loading="lazy" />
-<img src="img/building-img2.jpg" alt="더 센트럴타워 지제 소개 이미지" loading="lazy" />
-<img src="img/building-img.jpg" alt="더 센트럴타워 지제 소개 이미지" loading="lazy" />
+<img class="scroll-reveal" style="transition-delay:0ms" src="img/building-img3.jpg" alt="더 센트럴타워 지제 소개 이미지" loading="lazy" />
+<img class="intro-banner-pc scroll-reveal" style="transition-delay:150ms" src="assets/introbanner.gif" alt="SRT 지제역 호재! 4톤차량 이용가능한 화물용 엘레베이터완비!" loading="lazy" />
+<img class="intro-banner-mo scroll-reveal" style="transition-delay:150ms" src="assets/mintrobanner.gif" alt="SRT 지제역 호재! 4톤차량 이용가능한 화물용 엘레베이터완비!" loading="lazy" />
+<img class="scroll-reveal" style="transition-delay:300ms" src="img/building-img2.jpg" alt="더 센트럴타워 지제 소개 이미지" loading="lazy" />
+<img class="scroll-reveal" style="transition-delay:450ms" src="img/building-img.jpg" alt="더 센트럴타워 지제 소개 이미지" loading="lazy" />
 </div>
 </div>
 </div>
