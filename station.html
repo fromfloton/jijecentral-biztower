@@ -3,54 +3,31 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>제조형 | 평택지제센트럴타워 관리단</title>
+<title>지제역 소개 | 평택지제센트럴타워 관리단</title>
 <link rel="icon" type="image/png" href="img/favicon.png" />
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <link rel="stylesheet" href="css/styles.css" />
 <style>
-  /* min-height:100vh을 강제하면 콘텐츠(도면 이미지)가 짧은 층별 페이지에서 본문과 푸터 사이에
-     뷰포트 높이만큼 빈 공간이 생기고, 왼쪽 세로 bar도 그 빈 공간 위에서 붕 뜬 것처럼 보임 —
-     features.html은 콘텐츠 자체가 원래 길어서 이 문제가 안 보였을 뿐, 높이 강제는 필요 없음 */
+  /* benefit.html과 동일한 쉘 구조 재사용 — chain-ma-brand-wrap 세로 bar + chain-ma-cont
+     콘텐츠 영역, header/하단탭바/footer 유지. 지금은 틀만 — 본문(.station-content)은
+     추후 내용 채울 예정, feature-select-guide 문구도 비워둠(추후 직접 입력) */
   main#content { display: block !important; }
   body { background-color: #fff; }
-  /* features.html에서 층수 버튼을 누르면 흰 배경이 가운데서 양옆으로 퍼지며 화면을 덮은 뒤
-     이 페이지로 넘어옴(js/main.js goToFloorPage, page-split-backdrop) — 그 "가운데서 양옆으로
-     퍼지는" 모션을 도착 페이지에서도 그대로 이어서, 본문이 가운데서 양옆으로 열리듯 드러나며 페이드인.
-     header/footer/floating 버튼류는 페이지 넘어가도 계속 그 자리에 있는 것처럼 연속성을 유지해야
-     하므로 body 전체가 아니라 #container(= main#content를 감싸는 본문 영역)만 애니메이션 적용 */
   @keyframes pageFadeIn {
     from { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); }
     to { opacity: 1; clip-path: inset(0 0 0 0); -webkit-clip-path: inset(0 0 0 0); }
   }
   #container { animation: pageFadeIn .6s ease-out both; }
-  .chain-ma-feature-detail-page { margin-top: 9rem !important; }
-  .chain-ma-feature-detail-page:before { display: none !important; }
+  .chain-ma-station-page { margin-top: 9rem !important; }
+  .chain-ma-station-page:before { display: none !important; }
 
-  /* chain-ma-tit-wrap.row-type 안에 chain-ma-tit-row와 같은 행에 두 번째 flex 아이템으로 배치 —
-     row-type이 justify-content:space-between이라 자동으로 오른쪽 끝(=cont 오른쪽 패딩)에 붙고,
-     왼쪽의 chain-ma-tit-row가 cont 왼쪽 패딩에 붙는 것과 정확히 대칭됨(PC/모바일 공용, 별도 마진 계산 불필요) */
-  /* 글씨 크기는 같은 행의 chain-ma-sub-tit08과 동일한 기준(모바일 1.4rem/데스크톱 2.4rem)으로 —
-     독자적인 2.8rem 고정값을 쓰면 title-row 안 다른 요소들과 크기가 안 맞았음 */
-  .feature-detail-back {
-    display: flex; align-items: center; gap: .6rem; text-decoration: none; background: none; border: 0;
-    font-size: 1.4rem !important; color: #666; padding: 0; cursor: pointer; flex: 0 0 auto; white-space: nowrap;
-  }
-  @media (min-width: 768px) {
-    .feature-detail-back { font-size: 2.4rem !important; }
-  }
-  .feature-detail-back-ico {
-    display: inline-block; width: 1.6rem; height: 1.6rem;
-    background-repeat: no-repeat; background-position: center;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23666' stroke-width='1.2' d='M15 19l-7-7 7-7'/%3E%3C/svg%3E");
-  }
-  /* 왼쪽 브랜드 라벨 세로줄 — features.html의 chain-ma-brand-wrap과 동일한 패턴 (PC 전용) */
-  .chain-ma-feature-detail-page .chain-ma-brand-wrap {
+  .chain-ma-station-page .chain-ma-brand-wrap {
     position: absolute; left: 0; top: 0; bottom: 0; z-index: 1;
     display: flex; align-items: center; justify-content: center;
     width: 8.8rem; background-color: #fff; border-right: 1px solid #816c5b;
   }
-  .chain-ma-feature-detail-page .chain-ma-brand-wrap .brand-labels {
+  .chain-ma-station-page .chain-ma-brand-wrap .brand-labels {
     width: 8.8rem; display: flex; align-items: center; justify-content: center;
     writing-mode: vertical-rl; white-space: nowrap;
     font-size: 1.6rem; line-height: 2.8rem; color: #816c5b;
@@ -58,64 +35,43 @@
     letter-spacing: -.02em;
   }
   @media (max-width: 767px) {
-    .chain-ma-feature-detail-page .chain-ma-brand-wrap { display: none; }
+    .chain-ma-station-page .chain-ma-brand-wrap { display: none; }
   }
-  /* features.html의 chain-ma-tit01과 동일한 폰트 스타일로 맞춤 (PC/모바일 공용 —
-     override 없으면 폰트 스택 끝이 serif라 Pretendard 로드 지연/실패 시 한글이 명조체로 보임) */
-  .chain-ma-feature-detail-page .chain-ma-tit-wrap.row-type .chain-ma-tit01 {
+  .chain-ma-station-page .chain-ma-tit-wrap.row-type .chain-ma-tit01 {
     font-family: anth, Pretendard Variable, Noto Sans SC, Noto Sans Myanmar, Noto Sans Arabic, sans-serif;
     letter-spacing: -.02em;
   }
-  /* 층수 표시(8F 등)는 features.html의 "featured"와 동일하게 작고 연한 기본 스타일로 되돌림
-     (한때 타이틀과 같은 크기로 키웠었는데 features.html과 다르게 튀어서 사용자가 되돌려달라고 함) —
-     아래 chain-ma-cont * {font-size:2rem!important} 블록이 더 세게 덮어써서 그냥 두면 여전히
-     2rem이 되므로, 같은 !important + 더 높은 명시도로 기본값(모바일 1.4rem/데스크톱 2.4rem)을 강제 */
-  .chain-ma-feature-detail-page .chain-ma-tit-row .chain-ma-sub-tit08 {
+  /* "JIJE STATION"은 features.html의 "featured"와 동일하게 작고 연한 기본 스타일로 */
+  .chain-ma-station-page .chain-ma-tit-row .chain-ma-sub-tit08 {
     font-size: 1.4rem !important; line-height: 2.6rem;
   }
   @media (min-width: 768px) {
-    .chain-ma-feature-detail-page .chain-ma-tit-row .chain-ma-sub-tit08 {
+    .chain-ma-station-page .chain-ma-tit-row .chain-ma-sub-tit08 {
       font-size: 2.4rem !important; line-height: 4rem;
     }
   }
-  .feature-detail-desc { font-size: 1.4rem; line-height: 2.4rem; color: #666; margin-top: 1.2rem; }
-  /* 알약(chip) 스타일 없애고 세로로 한 줄씩, 빨간 체크마크 + 글자만 (2026-09-16 변경) —
-     featureGuideFadeIn, .feature-select-guide는 css/styles.css로 이동(전역 공용, features.html 값이 기준).
-     아래 애니메이션은 그 전역 keyframe을 그대로 재사용함 */
-  .feature-detail-specs {
-    display: flex; flex-direction: column; gap: .5rem; list-style: none;
-    margin: 1.6rem 0 0; padding: 0; margin-left: 0;
-    opacity: 0; animation: featureGuideFadeIn .6s ease-out both;
+  /* 목록으로 갈 곳이 없는 독립 페이지라 "홈으로" — benefit.html의 benefit-home-link와 동일 패턴 */
+  .station-home-link {
+    display: flex; align-items: center; gap: .6rem; text-decoration: none; background: none; border: 0;
+    font-size: 1.4rem !important; color: #666; padding: 0; cursor: pointer; flex: 0 0 auto; white-space: nowrap;
   }
-  @media (max-width: 767px) {
-    .feature-detail-specs { margin: 1.6rem 1.6rem 0; }
+  @media (min-width: 768px) {
+    .station-home-link { font-size: 2.4rem !important; }
   }
-  .feature-detail-specs li {
-    display: flex; align-items: center; gap: .8rem;
-    font-size: 1.6rem; font-weight: 700; color: #333;
-  }
-  /* word-break:keep-all을 쓰면 "지식산업센터(섹션오피스)"처럼 공백이 하나도 없는 라벨은
-     끊을 지점이 전혀 없다고 판단돼 줄바꿈이 안 되고 넘칠 수 있어 overflow-wrap만 사용 */
-  .feature-detail-specs li span { min-width: 0; overflow-wrap: break-word; }
-  .feature-detail-specs li:before {
-    content: ""; width: 1.8rem; height: 1.8rem; flex: 0 0 auto;
+  .station-home-link-ico {
+    display: inline-block; width: 1.6rem; height: 1.6rem;
     background-repeat: no-repeat; background-position: center;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23e5342a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23666' stroke-width='1.2' d='M15 19l-7-7 7-7'/%3E%3C/svg%3E");
   }
-  .feature-detail-img { margin-top: 2.4rem; border-radius: .8rem; overflow: hidden; background: #fafafa; }
-  .feature-detail-img img { display: block; width: 100%; height: auto; }
+
+  /* featureGuideFadeIn, .feature-select-guide, .chain-ma-cont(max-width/margin/padding)는
+     css/styles.css에 전역으로 이미 있음(features.html 값이 기준) — 여기선 따로 안 만듦 */
+
+  .station-content { margin-top: 2.4rem; }
 
   @media (min-width: 768px) {
-    /* max-width/센터링/여백은 wrap이 아니라 cont에 줘야 함 — wrap 자체에 주면 wrap이 먼저
-       좁아지고 센터링되면서, 그 안의 chain-ma-brand-wrap(left:0 절대배치)도 같이 안쪽으로
-       밀려버려 뷰포트 왼쪽 끝에 붙지 않는 버그가 있었음 (features.html은 cont에만 줌) */
-    /* 21.6rem이었을 때 헤더 바로 밑과 본문 사이에 약 8px(≈1.1rem)만큼 불필요하게 더 밀려
-       있었음 — location.html(header bottom과 거의 0px 차이로 붙음)과 실측 비교해서 보정 */
-    .chain-ma-feature-detail-page { margin-top: 20.5rem !important; }
-    /* .chain-ma-cont max-width/margin/padding은 css/styles.css로 이동(전역 공용) */
-    .feature-detail-specs li { font-size: 2.2rem; gap: 1.2rem; }
-    .feature-detail-specs li:before { width: 2.4rem; height: 2.4rem; }
-    .feature-detail-img { max-width: 120rem; margin: 3.2rem auto 0; }
+    .chain-ma-station-page { margin-top: 20.5rem !important; }
+    .station-content { margin-top: 3.2rem; }
   }
 </style>
 </head>
@@ -331,21 +287,21 @@
 
 <div id="container">
   <main id="content">
-<div class="chain-ma-wrap chain-ma-feature-detail-page">
+<div class="chain-ma-wrap chain-ma-station-page">
 <div class="chain-ma-brand-wrap"><p class="brand-labels">PYEONGTAEK JIJE</p></div>
 <div class="chain-ma-inner">
 <div class="chain-ma-cont">
 <div class="chain-ma-tit-wrap row-type">
 <div class="chain-ma-tit-row">
-<h2 class="chain-ma-tit01">제조형</h2>
-<div class="chain-ma-sub-tit08">3F</div>
+<h2 class="chain-ma-tit01">지제역 소개</h2>
+<div class="chain-ma-sub-tit08">JIJE STATION</div>
 </div>
-<a class="feature-detail-back" href="features.html"><i class="feature-detail-back-ico" aria-hidden="true"></i>목록으로</a>
+<a class="station-home-link" href="index.html"><i class="station-home-link-ico" aria-hidden="true"></i>홈으로</a>
 </div>
-<p class="feature-select-guide">이 층의 평면도와 시설 정보를 확인해보세요</p>
-
-<ul class="feature-detail-specs"><li><span>지식산업센터(제조형)</span></li><li><span>층고 : 6m</span></li><li><span>드라이브 인 시스템</span></li><li><span>도어 투 도어 시스템</span></li><li><span>화물용 엘리베이터</span></li></ul>
-<div class="feature-detail-img"><img src="img/crop/24f.jpg" alt="제조형 3F 평면도" loading="lazy" /></div>
+<p class="feature-select-guide"></p>
+<div class="station-content">
+<!-- 지제역 소개 콘텐츠 추가 예정 -->
+</div>
 </div>
 </div>
 </div>
