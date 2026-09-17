@@ -91,6 +91,12 @@
   .btn-download:hover { background: #916849; }
   .btn-download:disabled { opacity: .5; cursor: default; }
 
+  @media (max-width: 767px) {
+    /* 다운로드 버튼을 파일명 옆이 아니라 아래로, 크기/폰트는 지금의 절반으로 */
+    .file-row { flex-direction: column; align-items: flex-start; }
+    .btn-download { align-self: flex-start; margin-top: .8rem; font-size: 1.3rem; padding: .9rem 1.8rem; }
+  }
+
   .back-home { display: block; text-align: center; margin-top: 2.4rem; font-size: 2.34rem; color: #999; }
 </style>
 </head>
@@ -146,7 +152,10 @@
 
   var token = sessionStorage.getItem("ptc_token");
   if (!sessionStorage.getItem("ptc_logged_in") || !token) {
-    location.href = "login.html";
+    // href(push) 대신 replace: 히스토리에 mypage.html 항목을 새로 쌓지 않고 그 자리에서 바꿔치기.
+    // push를 쓰면 로그인 페이지에서 "뒤로가기"를 눌렀을 때 다시 이 mypage.html로 돌아왔다가
+    // 이 가드가 즉시 또 로그인 페이지로 돌려보내는 반복(루프)이 생겨 뒤로가기가 안 먹는 것처럼 보였음
+    location.replace("login.html");
   }
 
   document.getElementById("whoName").textContent = sessionStorage.getItem("ptc_name") || "회원";
@@ -156,7 +165,7 @@
 
   document.getElementById("logoutBtn").addEventListener("click", function () {
     sessionStorage.clear();
-    location.href = "login.html";
+    location.replace("login.html"); // 위와 동일한 이유로 replace (히스토리 루프 방지)
   });
 
   // 관리위원(A)만 로그인 직후 "소유자 전용 / 관리위원 전용" 구분 선택 화면을 보여줌 —
@@ -256,7 +265,7 @@
         if (!data.success) {
           if (data.message === "unauthorized") {
             sessionStorage.clear();
-            location.href = "login.html";
+            location.replace("login.html"); // 위와 동일한 이유로 replace (히스토리 루프 방지)
             return;
           }
           area.innerHTML = '<p class="file-state">접근할 수 없는 폴더입니다.</p>';

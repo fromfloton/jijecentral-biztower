@@ -1840,7 +1840,10 @@ body.menu-open { overflow: hidden; }
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
-  .header-wrap .btn-chain-header .chain-logo-img { height: 3.5rem; }
+  /* 3.5rem이었을 때 로고 비율(8.52:1)상 너비가 거의 30rem(~300px)까지 늘어나서, 360~412px대
+     실제 폰 화면에서 햄버거 버튼이 옆에 들어갈 자리가 없어 다음 줄로 떨어지는 버그가 있었음
+     (375px 데스크톱 크롬 창 테스트에선 턱걸이로 안 보였던 경계값 버그) */
+  .header-wrap .btn-chain-header .chain-logo-img { height: 2.2rem; }
 
   /* 하단 탭바 글자색(흰색)에 맞춰 햄버거 아이콘도 흰색으로 */
   .ico-hamburger {
