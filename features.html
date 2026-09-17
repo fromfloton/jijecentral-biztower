@@ -25,10 +25,7 @@
     from { opacity: 0; transform: translateY(-3rem); }
     to { opacity: 1; transform: translateY(0); }
   }
-  @keyframes featureGuideFadeIn {
-    from { opacity: 0; transform: translateY(.8rem); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  /* featureGuideFadeIn, .feature-select-guide는 css/styles.css로 이동(전역 공용, features.html 값이 기준) */
 
   /* 층수 버튼 클릭 시, 헤더/푸터를 제외한 본문 영역만 흰색이 가운데서 양옆으로 퍼지며 덮이는 전환 연출
      (top/height는 JS에서 헤더/푸터 위치 계산해서 인라인으로 지정) */
@@ -38,12 +35,6 @@
     transition: width 1s ease; pointer-events: none;
   }
   .page-split-backdrop.active { width: 100vw; }
-
-  /* 타이틀 밑 안내 문구 — PC/모바일 동일, 배경/카드보다 먼저 살짝 올라오며 등장 */
-  .feature-select-guide {
-    font-size: 1.4rem; line-height: 2.2rem; color: #777; margin-top: 1.2rem;
-    opacity: 0; animation: featureGuideFadeIn .6s ease-out both;
-  }
 
   /* 오피스/제조형/근린생활 선택 카드 그리드 — 모바일 1열, PC 3열 (동일 마크업 재사용) */
   .feature-select-grid {
@@ -139,12 +130,10 @@
     .feature-select-arrow { display: none; }
 
     .chain-ma-features { margin-top: 0 !important; }
-    .chain-ma-features .chain-ma-cont {
-      max-width: 145rem; margin: 0 auto; padding: 0 2rem 0 1rem;
-    }
+    /* .chain-ma-cont max-width/센터링/패딩은 css/styles.css로 이동(다른 페이지들과 공유) —
+       .chain-ma-features, .chain-ma-feature-detail-page, .chain-ma-benefit-page 공용 규칙 */
     /* PC 헤더가 프로모션 배너 + GNB 2단이라 모바일보다 더 큰 여백 필요 (타이틀은 흰 배경 위, 이미지는 그 아래부터) */
     .chain-ma-features .chain-ma-tit-wrap { width: 145rem; padding-top: 27rem; }
-    .feature-select-guide { font-size: 2.8rem; line-height: 4rem; }
     /* 원본 사이트 기본값은 폰트 스택 끝이 serif라, Pretendard 로드가 늦거나 실패하면 한글이 명조체로 보임 —
        모바일과 동일하게 끝을 sans-serif로 맞춰서 항상 산세리프로 렌더링되게 고정 */
     .chain-ma-features .chain-ma-tit-wrap.row-type .chain-ma-tit01 {
@@ -217,9 +206,6 @@
       font-family: anth, Pretendard Variable, Noto Sans SC, Noto Sans Myanmar, Noto Sans Arabic, sans-serif;
       letter-spacing: -.02em;
     }
-    /* chain-ma-tit-wrap과 동일한 좌우 여백(전역 모바일 타이틀 규칙: margin:0 2rem)으로 안내 문구 정렬 맞춤 + 타이틀 바로 밑에 붙게 */
-    .feature-select-guide { margin: .2rem 2rem 0; }
-
     /* 건물 이미지를 타이틀 아래쪽부터 배경으로 깔고, 카드는 배경 안에서 왼쪽 정렬 + 위아래 정중앙 */
     .feature-select-media {
       position: relative; display: flex; align-items: center;

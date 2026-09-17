@@ -79,23 +79,8 @@
   }
   .feature-detail-desc { font-size: 1.4rem; line-height: 2.4rem; color: #666; margin-top: 1.2rem; }
   /* 알약(chip) 스타일 없애고 세로로 한 줄씩, 빨간 체크마크 + 글자만 (2026-09-16 변경) —
-     features.html의 feature-select-guide(안내 문구)와 동일한 페이드인 등장 효과 적용 */
-  @keyframes featureGuideFadeIn {
-    from { opacity: 0; transform: translateY(.8rem); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  /* features.html "원하시는 공간을 눌러서 살펴보세요"와 동일한 연한 eyebrow 안내문구 —
-     사이트 전체 일관성을 위해 같은 클래스명/값 재사용 */
-  .feature-select-guide {
-    font-size: 1.4rem; line-height: 2.2rem; color: #777; margin-top: 1.2rem;
-    opacity: 0; animation: featureGuideFadeIn .6s ease-out both;
-  }
-  @media (max-width: 767px) {
-    .feature-select-guide { margin-left: 2rem; }
-  }
-  @media (min-width: 768px) {
-    .feature-select-guide { font-size: 2.8rem; line-height: 4rem; }
-  }
+     featureGuideFadeIn, .feature-select-guide는 css/styles.css로 이동(전역 공용, features.html 값이 기준).
+     아래 애니메이션은 그 전역 keyframe을 그대로 재사용함 */
   .feature-detail-specs {
     display: flex; flex-direction: column; gap: .5rem; list-style: none;
     margin: 1.6rem 0 0; padding: 0; margin-left: 0;
@@ -126,10 +111,7 @@
     /* 21.6rem이었을 때 헤더 바로 밑과 본문 사이에 약 8px(≈1.1rem)만큼 불필요하게 더 밀려
        있었음 — location.html(header bottom과 거의 0px 차이로 붙음)과 실측 비교해서 보정 */
     .chain-ma-feature-detail-page { margin-top: 20.5rem !important; }
-    /* features.html의 .chain-ma-features .chain-ma-cont와 동일한 값(145rem / 좌우 비대칭 패딩)으로 통일 */
-    .chain-ma-feature-detail-page .chain-ma-cont {
-      max-width: 145rem; margin: 0 auto; padding: 5rem 2rem 0 1rem;
-    }
+    /* .chain-ma-cont max-width/margin/padding은 css/styles.css로 이동(전역 공용) */
     .feature-detail-specs li { font-size: 2.2rem; gap: 1.2rem; }
     .feature-detail-specs li:before { width: 2.4rem; height: 2.4rem; }
     .feature-detail-img { max-width: 120rem; margin: 3.2rem auto 0; }

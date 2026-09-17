@@ -519,6 +519,39 @@
     if (prevBtn) prevBtn.addEventListener("click", function () { start = Math.max(start - 1, 0); render(); });
     window.addEventListener("resize", function () { calcPerView(); render(); });
 
+    // 모바일 손가락 스와이프 — 지금까지는 화살표 버튼 클릭만 동작해서 실제 폰에서는
+    // 카드를 옆으로 밀어도 아무 반응이 없었음(진짜 Swiper 라이브러리가 아니라 직접 만든
+    // 캐러셀이라 터치 제스처가 아예 없었음). touchstart~touchend 이동거리로 좌우 스와이프 감지.
+    (function initTouchSwipe() {
+      var startX = 0, startY = 0, deltaX = 0, tracking = false;
+      var THRESHOLD = 40; // px, 이보다 적게 움직이면 스와이프로 안 침(탭/스크롤과 구분)
+
+      wrapper.addEventListener("touchstart", function (e) {
+        if (!e.touches || !e.touches.length) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        deltaX = 0;
+        tracking = true;
+      }, { passive: true });
+
+      wrapper.addEventListener("touchmove", function (e) {
+        if (!tracking || !e.touches || !e.touches.length) return;
+        deltaX = e.touches[0].clientX - startX;
+      }, { passive: true });
+
+      wrapper.addEventListener("touchend", function () {
+        if (!tracking) return;
+        tracking = false;
+        if (deltaX <= -THRESHOLD) {
+          start = Math.min(start + 1, maxStart);
+          render();
+        } else if (deltaX >= THRESHOLD) {
+          start = Math.max(start - 1, 0);
+          render();
+        }
+      });
+    })();
+
     setDataset(diningHTML);
 
     // 칩 필터 (다이닝/부대시설) — 클릭한 카테고리의 카드 세트로 실제 교체

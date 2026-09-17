@@ -17,9 +17,13 @@
     display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.6rem;
     margin-bottom: 2.4rem;
   }
-  .mypage-header .who { font-size: 3.6rem; font-weight: 600; }
-  .mypage-header .who .role-badge {
-    display: inline-block; font-size: 2.4rem; font-weight: 500; margin-left: 1.6rem;
+  /* who-wrap: DOM 순서는 항상 배지가 먼저(role-badge -> who)지만, 데스크톱에서는 CSS order로
+     기존 모습(이름 먼저 + 배지가 이름 옆) 그대로 유지. 모바일에서만 order를 바꿔서 배지가
+     이름/호실 위에 오도록 함(요청: "role-badge를 id보다 위에 배치" — CSS는 모바일 전용) */
+  .who-wrap { display: flex; align-items: center; flex-wrap: wrap; }
+  .who-wrap .who { order: 1; font-size: 3.6rem; font-weight: 600; }
+  .who-wrap .role-badge {
+    order: 2; display: inline-block; font-size: 2.4rem; font-weight: 500; margin-left: 1.6rem;
     background: #a97b5f; color: #fff; padding: .6rem 1.8rem; border-radius: 99px; vertical-align: middle;
   }
   .mypage-header .room { font-size: 2.52rem; color: #cfd0e0; margin-top: .8rem; }
@@ -28,6 +32,28 @@
     font-size: 2.6rem; padding: 1.8rem 3.6rem; border-radius: .4rem; cursor: pointer;
   }
   .mypage-header .btn-logout:hover { background: rgba(255,255,255,.12); }
+  @media (max-width: 767px) {
+    .who-wrap { flex-direction: column; align-items: flex-start; }
+    .who-wrap .role-badge { order: -1; margin-left: 0; margin-bottom: .8rem; }
+    /* 로그아웃 버튼 축소 + 폰트는 .room과 동일 사이즈로 */
+    .mypage-header .btn-logout { font-size: 2.52rem; padding: 1rem 2.2rem; }
+  }
+
+  /* 관리위원 전용/소유자 전용 구분 선택 화면 (관리위원만 로그인 직후 노출) */
+  .role-picker-grid { display: flex; gap: 1.6rem; flex-wrap: wrap; }
+  .role-picker-btn {
+    flex: 1 1 20rem; background: #fff; border: 1px solid #ddd; border-radius: .8rem;
+    padding: 3.2rem 2.4rem; cursor: pointer; text-align: left; transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .role-picker-btn:hover { border-color: #816c5b; box-shadow: 0 .4rem 1.2rem rgba(0,0,0,.08); }
+  .role-picker-btn .rp-tit { display: block; font-size: 2.8rem; font-weight: 600; color: #111; margin-bottom: .8rem; }
+  .role-picker-btn .rp-sub { display: block; font-size: 2.1rem; color: #888; }
+  .view-switch { font-size: 2.16rem; color: #888; margin-bottom: 1.6rem; }
+  .view-switch b { color: #444; }
+  .view-switch button {
+    background: none; border: 0; color: #816c5b; text-decoration: underline; text-underline-offset: .3rem;
+    font-size: inherit; cursor: pointer; padding: 0; margin-left: .4rem;
+  }
 
   .file-panel { background: #fff; border-radius: .8rem; padding: 3.2rem; box-shadow: 0 .4rem 1.6rem rgba(0,0,0,.06); }
   .file-panel h2 { font-size: 3.06rem; font-weight: 600; color: #111; margin-bottom: 2rem; }
@@ -73,14 +99,34 @@
   <div class="mypage-inner">
     <div class="mypage-header">
       <div>
-        <div class="who"><span id="whoName">-</span>님<span class="role-badge" id="whoRole">-</span></div>
+        <div class="who-wrap">
+          <span class="role-badge" id="whoRole">-</span>
+          <div class="who"><span id="whoName">-</span>님</div>
+        </div>
         <div class="room" id="whoRoom"></div>
       </div>
       <button class="btn-logout" id="logoutBtn">로그아웃</button>
     </div>
 
-    <div class="file-panel">
+    <div class="file-panel" id="rolePickerPanel" style="display:none;">
+      <h2>어떤 자료를 보시겠어요?</h2>
+      <div class="role-picker-grid">
+        <button class="role-picker-btn" id="pickOwnerBtn" type="button">
+          <span class="rp-tit">소유자 전용</span>
+          <span class="rp-sub">소유자 대상 공지·서류를 봅니다</span>
+        </button>
+        <button class="role-picker-btn" id="pickAdminBtn" type="button">
+          <span class="rp-tit">관리위원 전용</span>
+          <span class="rp-sub">관리위원 대상 공지·서류를 봅니다</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="file-panel" id="filePanel">
       <h2>소유자 라운지</h2>
+      <div id="viewSwitch" class="view-switch" style="display:none;">
+        현재 <b id="currentCatLabel"></b> 보는 중<button type="button" id="switchCatBtn">구분 변경</button>
+      </div>
       <div id="breadcrumb" class="breadcrumb"></div>
       <div id="fileListArea">
         <p class="file-state">불러오는 중...</p>
@@ -111,6 +157,45 @@
   document.getElementById("logoutBtn").addEventListener("click", function () {
     sessionStorage.clear();
     location.href = "login.html";
+  });
+
+  // 관리위원(A)만 로그인 직후 "소유자 전용 / 관리위원 전용" 구분 선택 화면을 보여줌 —
+  // 소유자(O)는 이 화면 없이 기존처럼 바로 자료 목록으로 들어감(PC/모바일 공통 기능)
+  var role = sessionStorage.getItem("ptc_role");
+  var viewCat = sessionStorage.getItem("ptc_view_cat");
+  var rolePickerPanel = document.getElementById("rolePickerPanel");
+  var filePanel = document.getElementById("filePanel");
+  var viewSwitch = document.getElementById("viewSwitch");
+
+  function showPicker() {
+    rolePickerPanel.style.display = "";
+    filePanel.style.display = "none";
+  }
+  function showFilePanel() {
+    rolePickerPanel.style.display = "none";
+    filePanel.style.display = "";
+    if (role === "A" && viewCat) {
+      viewSwitch.style.display = "";
+      document.getElementById("currentCatLabel").textContent = CAT_LABEL[viewCat] || viewCat;
+    } else {
+      viewSwitch.style.display = "none";
+    }
+    loadCurrent();
+  }
+  function pickCategory(cat) {
+    viewCat = cat;
+    sessionStorage.setItem("ptc_view_cat", cat);
+    pathStack = [];
+    showFilePanel();
+  }
+
+  document.getElementById("pickOwnerBtn").addEventListener("click", function () { pickCategory("O"); });
+  document.getElementById("pickAdminBtn").addEventListener("click", function () { pickCategory("A"); });
+  document.getElementById("switchCatBtn").addEventListener("click", function () {
+    sessionStorage.removeItem("ptc_view_cat");
+    viewCat = null;
+    pathStack = [];
+    showPicker();
   });
 
   function callApi(payload) {
@@ -186,6 +271,11 @@
 
   function renderItems(items) {
     var area = document.getElementById("fileListArea");
+    // 관리위원이 "소유자 전용"/"관리위원 전용"을 선택했으면 그 구분에 안 맞는 항목은 숨김
+    // (분류 안 된 항목은 그대로 노출). 소유자(O)는 이 필터 자체를 안 탐(viewCat이 항상 없음).
+    if (role === "A" && viewCat && items) {
+      items = items.filter(function (it) { return !it.category || it.category === viewCat; });
+    }
     if (!items || items.length === 0) {
       area.innerHTML = '<p class="file-state">등록된 자료가 없습니다.</p>';
       return;
@@ -259,7 +349,11 @@
       });
   }
 
-  loadCurrent();
+  if (role === "A" && !viewCat) {
+    showPicker();
+  } else {
+    showFilePanel();
+  }
 </script>
 </body>
 </html>
