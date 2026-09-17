@@ -1064,20 +1064,23 @@ main>.chain-ma-wrap:first-child:not(.chain-ma-kv):before {content:"";display:blo
      padding-top:27rem(히어로 이미지용 여백)은 여기 포함하지 않음(build_features.py 로컬에 남겨둠) */
   .chain-ma-features .chain-ma-tit-wrap,
   .chain-ma-feature-detail-page .chain-ma-tit-wrap,
-  .chain-ma-benefit-page .chain-ma-tit-wrap {
+  .chain-ma-benefit-page .chain-ma-tit-wrap,
+  .chain-ma-intro-page .chain-ma-tit-wrap {
     width: 145rem;
   }
 
-  /* chain-ma-cont: max-width/센터링은 공용, 좌우 패딩은 페이지군마다 다름(층별상세/베네핏은
-     사용자가 이후 5rem 2rem 0 1rem으로 별도 조정했었어서 그 값 유지) */
+  /* chain-ma-cont: max-width/센터링은 공용, 좌우 패딩은 페이지군마다 다름(층별상세/베네핏/
+     소개페이지는 사용자가 이후 5rem 2rem 0 1rem으로 별도 조정했었어서 그 값 유지) */
   .chain-ma-features .chain-ma-cont,
   .chain-ma-feature-detail-page .chain-ma-cont,
-  .chain-ma-benefit-page .chain-ma-cont {
+  .chain-ma-benefit-page .chain-ma-cont,
+  .chain-ma-intro-page .chain-ma-cont {
     max-width: 145rem; margin: 0 auto;
   }
   .chain-ma-features .chain-ma-cont { padding: 0 2rem 0 1rem; }
   .chain-ma-feature-detail-page .chain-ma-cont,
-  .chain-ma-benefit-page .chain-ma-cont {
+  .chain-ma-benefit-page .chain-ma-cont,
+  .chain-ma-intro-page .chain-ma-cont {
     padding: 5rem 2rem 0 1rem;
   }
 }
