@@ -892,7 +892,7 @@ a.gnb-link-4:focus .gnb-tit-4, a.gnb-link-4:hover .gnb-tit-4 {text-decoration:un
   .header-wrap .header-allmenu-wrap {display:block}
   .header-wrap .header-inner {padding:0 2rem}
   .header-wrap .header-group01 {border-bottom:0}
-  .header-wrap .header-group01-row {padding:0;min-height:5.6rem}
+  .header-wrap .header-group01-row {padding:0}
   .header-wrap .header-group01-col {align-items:stretch}
   .header-wrap .header-group02 {display:none}
   .chain-logo-ctr .header-wrap .btn-header-logo01 {display:none}
@@ -1908,7 +1908,7 @@ body.menu-open { overflow: hidden; }
 
 @media (max-width: 767px) {
   .mobile-promo-banner {
-    display: block; position: fixed; left: 0; right: 0; top: 5.8rem; z-index: 2100;
+    display: block; position: fixed; left: 0; right: 0; top: 8rem; z-index: 2100;
   }
   .mobile-promo-banner img { display: block; width: 100%; height: auto; }
 }
