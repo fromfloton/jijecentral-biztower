@@ -1920,7 +1920,16 @@ body.menu-open { overflow: hidden; }
 
   /* GNB "프리미엄" 메뉴가 index.html #premium(Featured 섹션)으로 앵커 이동 시 고정 헤더에 안 가리게 */
   #premium { scroll-margin-top: 21.6rem; }
+
+  /* 메인(index.html)은 PC 배너 숨김 → 헤더가 배너 높이(약 9.6rem)만큼 낮아지므로 앵커 여백도 그만큼 줄임 */
+  .page-main #premium { scroll-margin-top: 12rem; }
+  /* 배너 빠져 빈 윗줄(header-group01)의 하단 테두리가 헤더 맨 위 회색 줄로 남는 것 제거 */
+  .page-main #header .header-wrap .header-group01 { border-bottom: none; }
 }
+
+/* 메인(index.html)만 PC·모바일 프로모션 배너 숨김 (다른 페이지 PC 배너는 유지) */
+.page-main .header-promo-banner,
+.page-main .mobile-promo-banner { display: none; }
 
 @media (max-width: 767px) {
   .mobile-promo-banner {

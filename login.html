@@ -54,7 +54,7 @@
       <form id="loginForm">
         <div class="field">
           <label for="loginId">아이디 (전화번호)</label>
-          <input type="text" id="loginId" name="loginId" autocomplete="username" placeholder="010-0000-0000" inputmode="numeric" />
+          <input type="text" id="loginId" name="loginId" autocomplete="username" placeholder="- 없이 숫자만 입력해주세요" inputmode="numeric" />
         </div>
         <div class="field">
           <label for="loginPw">비밀번호</label>
@@ -63,7 +63,7 @@
         <button type="submit" class="btn-submit" id="loginSubmitBtn">로그인</button>
       </form>
       <div class="links">
-        <a href="#">아이디/비밀번호 찾기</a>
+        <a href="#" id="findAccountLink">아이디/비밀번호 찾기</a>
       </div>
     </div>
     <div id="loginWelcomeArea" class="welcome" style="display:none;">
@@ -74,7 +74,7 @@
   </div>
 </div>
 
-<div class="reservation-fixed-wrap" id="reservationFixedWrap"><a aria-label="전화 문의 031-111-1111" class="btn btn-call-fab" href="tel:031-111-1111"><i aria-hidden="true" class="ico ico-btn-call-fab"></i><span class="btn-txt">031-111-1111</span></a><a aria-label="카카오톡 상담" class="btn btn-kakao-fab" href="http://pf.kakao.com/_FUPrX" target="_blank" rel="noopener"><i aria-hidden="true" class="ico ico-btn-kakao-fab"></i><span class="btn-txt">카카오톡 상담</span></a></div>
+<div class="reservation-fixed-wrap" id="reservationFixedWrap"><a aria-label="전화 문의 031-653-1588" class="btn btn-call-fab" href="tel:031-653-1588"><i aria-hidden="true" class="ico ico-btn-call-fab"></i><span class="btn-txt">031-653-1588</span></a><a aria-label="카카오톡 상담" class="btn btn-kakao-fab" href="http://pf.kakao.com/_FUPrX" target="_blank" rel="noopener"><i aria-hidden="true" class="ico ico-btn-kakao-fab"></i><span class="btn-txt">카카오톡 상담</span></a></div>
 
 <script src="js/main.js"></script>
 <script>
@@ -83,6 +83,11 @@
   var form = document.getElementById("loginForm");
   var submitBtn = document.getElementById("loginSubmitBtn");
   var errorMsg = document.getElementById("loginError");
+
+  document.getElementById("findAccountLink").addEventListener("click", function (e) {
+    e.preventDefault();
+    alert("평택지제 센트럴타워 관리단으로 연락 바랍니다.\n031-653-1588");
+  });
 
   // "목록으로" — index.html로 무조건 보내지 않고, 실제 뒤로가기(PC/모바일 공통 기능)
   document.getElementById("backToListLink").addEventListener("click", function (e) {
