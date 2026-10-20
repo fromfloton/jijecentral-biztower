@@ -24,8 +24,9 @@
   .who-wrap { display: flex; align-items: center; flex-wrap: wrap; }
   .who-wrap .who { order: 1; font-size: 3.6rem; font-weight: 600; }
   .who-wrap .role-badge {
-    order: 2; display: inline-block; font-size: 2.4rem; font-weight: 500; margin-left: 1.6rem;
-    background: #a97b5f; color: #fff; padding: .6rem 1.8rem; border-radius: 99px; vertical-align: middle;
+    /* 캡슐 배지 → 글자만(색은 기존 캡슐 배경색), 이름보다 작게 */
+    order: 2; display: inline-block; font-size: 2.2rem; font-weight: 600; margin-left: 1.6rem;
+    color: #a97b5f; vertical-align: middle;
   }
   .mypage-header .room { font-size: 2.52rem; color: #cfd0e0; margin-top: .8rem; }
   .mypage-header .btn-logout {
@@ -61,11 +62,50 @@
 
   .file-state { font-size: 2.52rem; color: #888; padding: 3rem 0; text-align: center; }
 
-  .breadcrumb { font-size: 2.34rem; color: #888; margin-bottom: 1.6rem; }
-  .breadcrumb .crumb { cursor: pointer; }
-  .breadcrumb .crumb:last-child { color: #222; font-weight: 500; cursor: default; }
-  .breadcrumb .crumb:hover:not(:last-child) { text-decoration: underline; }
-  .breadcrumb .crumb-sep { margin: 0 .4rem; color: #ccc; }
+  /* ── 폴더 탐색: 폴더 목록 방식 → 메뉴 방식 (PC/모바일 공통 데이터, 화면만 다르게) ──
+     PC   : [경로 요약줄(탐색기 주소창)] → [상단 메뉴(최상위 폴더)] → [하위 메뉴 줄] → 파일 목록
+     모바일: [이전으로 버튼 + 현재 위치] → 큰 메뉴 버튼(하위 폴더) → 파일 카드(큰 내려받기 버튼) */
+  .only-mo { display: none; }
+  @media (min-width: 768px) { .mypage-inner { max-width: 120rem; } } /* 상단 메뉴가 한 줄에 들어가도록 PC만 넓힘 */
+
+  .lounge-pathbar {
+    display: flex; align-items: stretch; border: 1px solid #d9d9e0; border-radius: .6rem;
+    background: #f8f8fa; margin-bottom: 2.4rem; overflow: hidden;
+  }
+  .lounge-pathbar .btn-up {
+    flex: 0 0 auto; background: #fff; border: 0; border-right: 1px solid #d9d9e0;
+    font-size: 2.2rem; color: #444; padding: 1.4rem 2.4rem; cursor: pointer; white-space: nowrap;
+  }
+  .lounge-pathbar .btn-up:hover:not(:disabled) { background: #f1ece8; }
+  .lounge-pathbar .btn-up:disabled { color: #bbb; cursor: default; }
+  .lounge-pathbar .crumbs {
+    display: flex; align-items: center; flex-wrap: wrap; gap: .4rem; padding: 1.2rem 2rem;
+    font-size: 2.2rem; color: #777; min-width: 0;
+  }
+  .lounge-pathbar .crumb { background: none; border: 0; padding: .4rem .6rem; font-size: inherit; color: inherit; cursor: pointer; border-radius: .3rem; }
+  .lounge-pathbar .crumb:hover { background: #ebe6e1; color: #222; }
+  .lounge-pathbar .crumb.current { color: #222; font-weight: 600; cursor: default; background: none; }
+  .lounge-pathbar .crumb-sep { color: #bbb; }
+
+  .lounge-menu { margin-bottom: 2.4rem; }
+  .menu-row-main { display: flex; flex-wrap: wrap; border-bottom: 2px solid #e5e5ea; }
+  .menu-row-main .menu-item {
+    background: none; border: 0; border-bottom: .4rem solid transparent; margin-bottom: -2px;
+    font-size: 2.6rem; color: #666; padding: 1.8rem 2.8rem; cursor: pointer;
+  }
+  .menu-row-main .menu-item:hover { color: #242750; }
+  .menu-row-main .menu-item.active { color: #242750; font-weight: 700; border-bottom-color: #816c5b; }
+  .menu-row-sub {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+    background: #f6f3f0; padding: 1.6rem 2rem; border-bottom: 1px solid #ebe4dd;
+  }
+  .menu-row-sub .sub-label { font-size: 2rem; color: #a08b7a; margin-right: .6rem; }
+  .menu-row-sub .menu-item {
+    background: #fff; border: 1px solid #ddd2c8; border-radius: 99px;
+    font-size: 2.2rem; color: #555; padding: .9rem 2.2rem; cursor: pointer;
+  }
+  .menu-row-sub .menu-item:hover { border-color: #816c5b; color: #816c5b; }
+  .menu-row-sub .menu-item.active { background: #816c5b; border-color: #816c5b; color: #fff; font-weight: 600; }
 
   .file-row {
     display: flex; align-items: center; justify-content: space-between; gap: 1.6rem;
@@ -74,10 +114,8 @@
   .file-row:last-child { border-bottom: 0; }
   .file-row .file-info { min-width: 0; }
   .file-row .file-name { font-size: 2.4rem; color: #222; font-weight: 500; word-break: break-all; }
-  .file-row .folder-icon { font-size: 3rem; vertical-align: middle; }
-  .file-row.folder-row { cursor: pointer; }
-  .file-row.folder-row:hover { background: #faf8f6; margin: 0 -1rem; padding: 2.4rem 1rem; border-radius: .4rem; }
   .file-row .file-meta { font-size: 2.16rem; color: #999; margin-top: .4rem; }
+  .folder-item { display: none; }
   .file-row .cat-badge {
     display: inline-block; font-size: 2.2rem; padding: .4rem 1.4rem; border-radius: 99px;
     margin-right: .6rem; vertical-align: middle;
@@ -92,10 +130,47 @@
   .btn-download:hover { background: #916849; }
   .btn-download:disabled { opacity: .5; cursor: default; }
 
+  /* 모바일: 고령 사용자 고려 — 글자 18px 이상, 누르는 영역 56px 이상, 가로 스크롤 메뉴 없이
+     세로로 큰 버튼만 나열, "이전으로" 버튼은 항상 같은 자리(맨 위)에 */
   @media (max-width: 767px) {
-    /* 다운로드 버튼을 파일명 옆이 아니라 아래로, 크기/폰트는 지금의 절반으로 */
-    .file-row { flex-direction: column; align-items: flex-start; }
-    .btn-download { align-self: flex-start; margin-top: .8rem; font-size: 1.3rem; padding: .9rem 1.8rem; }
+    .mypage-wrap { padding: 2rem 1.6rem; }
+    .file-panel { padding: 2.4rem 1.6rem; }
+    .file-panel h2 { font-size: 2.4rem; margin-bottom: 1.6rem; }
+    .only-pc { display: none !important; }
+    .only-mo { display: block; }
+
+    .mo-nav .btn-back {
+      display: flex; align-items: center; justify-content: center; gap: .8rem; width: 100%;
+      min-height: 5.8rem; background: #242750; color: #fff; border: 0; border-radius: .8rem;
+      font-size: 2.1rem; font-weight: 600; cursor: pointer; margin-bottom: 2rem;
+    }
+    .mo-nav .here-label { font-size: 1.7rem; color: #888; }
+    .mo-nav .here-name { font-size: 2.6rem; font-weight: 700; color: #111; margin-top: .4rem; word-break: keep-all; }
+    .mo-nav .here-path { font-size: 1.7rem; color: #888; margin-top: .6rem; line-height: 1.5; }
+    .mo-nav .guide { font-size: 2rem; color: #444; line-height: 1.5; }
+    .mo-nav { padding-bottom: 2rem; margin-bottom: .8rem; border-bottom: 2px solid #eee; }
+
+    .folder-item {
+      display: flex; align-items: center; gap: 1.4rem; width: 100%; min-height: 7.2rem;
+      background: #fff; border: 2px solid #e2dcd6; border-radius: 1rem; padding: 1.6rem 1.8rem;
+      margin-top: 1.2rem; cursor: pointer; text-align: left;
+    }
+    .folder-item:active { background: #f6f3f0; border-color: #816c5b; }
+    .folder-item .fi-icon { font-size: 3rem; flex: 0 0 auto; }
+    .folder-item .fi-name { flex: 1 1 auto; font-size: 2.1rem; font-weight: 600; color: #222; word-break: keep-all; line-height: 1.4; }
+    .folder-item .fi-arrow { flex: 0 0 auto; font-size: 2.8rem; color: #816c5b; font-weight: 700; }
+
+    .file-row {
+      flex-direction: column; align-items: stretch; gap: 1.2rem;
+      border: 2px solid #eee; border-radius: 1rem; padding: 1.8rem; margin-top: 1.2rem;
+    }
+    .file-row:last-child { border-bottom: 2px solid #eee; }
+    .file-row .file-name { font-size: 2rem; line-height: 1.45; }
+    .file-row .file-meta { font-size: 1.7rem; color: #777; }
+    .file-row .cat-badge { font-size: 1.6rem; }
+    .btn-download { width: 100%; min-height: 5.6rem; font-size: 2rem; font-weight: 600; padding: 1rem; border-radius: .8rem; }
+    .file-state { font-size: 2rem; }
+    .back-home { font-size: 1.9rem; padding: 1.6rem 0; }
   }
 
   .back-home { display: block; text-align: center; margin-top: 2.4rem; font-size: 2.34rem; color: #999; }
@@ -134,7 +209,9 @@
       <div id="viewSwitch" class="view-switch" style="display:none;">
         현재 <b id="currentCatLabel"></b> 보는 중<button type="button" id="switchCatBtn">구분 변경</button>
       </div>
-      <div id="breadcrumb" class="breadcrumb"></div>
+      <div id="pathBar" class="lounge-pathbar only-pc"></div>
+      <nav id="menuArea" class="lounge-menu only-pc" aria-label="자료 메뉴"></nav>
+      <div id="moNav" class="mo-nav only-mo"></div>
       <div id="fileListArea">
         <p class="file-state">불러오는 중...</p>
       </div>
@@ -196,6 +273,8 @@
     viewCat = cat;
     sessionStorage.setItem("ptc_view_cat", cat);
     pathStack = [];
+    listCache = {}; // 캐시는 구분 필터가 적용된 결과라 구분이 바뀌면 비움
+    history.replaceState({ loungePath: [] }, "");
     showFilePanel();
   }
 
@@ -205,6 +284,8 @@
     sessionStorage.removeItem("ptc_view_cat");
     viewCat = null;
     pathStack = [];
+    listCache = {};
+    history.replaceState({ loungePath: [] }, "");
     showPicker();
   });
 
@@ -231,82 +312,178 @@
   }
 
   var pathStack = []; // [{id, name}, ...] 현재 들어와 있는 폴더 경로
+  var listCache = {};  // folderId("root"=최상위) -> 필터 적용된 items. 상단/하위 메뉴를 다시 그릴 때 재요청 안 하려고 보관
+  var LOUNGE_TITLE = "소유자 라운지";
 
-  function renderBreadcrumb() {
-    var bc = document.getElementById("breadcrumb");
-    if (pathStack.length === 0) {
-      // 최상위에서는 위 타이틀("소유자 라운지")과 중복되므로 표시 안 함
-      bc.innerHTML = "";
-      bc.style.display = "none";
-      return;
-    }
-    bc.style.display = "";
-    var html = '<span class="crumb" data-idx="-1">소유자 라운지</span>';
-    pathStack.forEach(function (p, idx) {
-      html += '<span class="crumb-sep">›</span><span class="crumb" data-idx="' + idx + '">' + p.name.replace(/</g, "&lt;") + '</span>';
-    });
-    bc.innerHTML = html;
-    bc.querySelectorAll(".crumb").forEach(function (el) {
-      el.addEventListener("click", function () {
-        var idx = parseInt(el.getAttribute("data-idx"), 10);
-        pathStack = idx === -1 ? [] : pathStack.slice(0, idx + 1);
-        loadCurrent();
-      });
-    });
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); }
+  function keyOf(folder) { return folder ? folder.id : "root"; }
+  function foldersOf(key) { return (listCache[key] || []).filter(function (it) { return it.type === "folder"; }); }
+
+  // 폴더 이동 = 브라우저 히스토리 한 칸. 모바일에서 기기 "뒤로" 버튼을 누르면
+  // 페이지를 떠나지 않고 상위 폴더로 올라가도록(고령 사용자가 가장 많이 쓰는 동작)
+  function goTo(newPath) {
+    pathStack = newPath;
+    history.pushState({ loungePath: pathStack }, "");
+    loadCurrent();
   }
+  function goUp() {
+    if (pathStack.length) history.back();
+  }
+  window.addEventListener("popstate", function (e) {
+    if (filePanel.style.display === "none") return; // 구분 선택 화면에서는 무시
+    pathStack = (e.state && e.state.loungePath) || [];
+    loadCurrent();
+  });
 
-  function loadCurrent() {
-    renderBreadcrumb();
-    var area = document.getElementById("fileListArea");
-    area.innerHTML = '<p class="file-state">불러오는 중...</p>';
-    var current = pathStack[pathStack.length - 1];
-
-    callApi({ action: "list", token: token, folderId: current ? current.id : null })
+  // 현재 폴더 + 경로상의 모든 상위 폴더 목록을 확보(캐시에 없으면 요청). 상위 목록이 있어야
+  // PC 상단/하위 메뉴 줄을 그릴 수 있음(뒤로가기·주소창 클릭 등으로 바로 들어온 경우 대비)
+  function fetchList(key) {
+    if (listCache[key]) return Promise.resolve(true);
+    return callApi({ action: "list", token: token, folderId: key === "root" ? null : key })
       .then(function (data) {
         if (!data.success) {
           if (data.message === "unauthorized") {
             sessionStorage.clear();
             location.replace("login.html"); // 위와 동일한 이유로 replace (히스토리 루프 방지)
-            return;
           }
+          return false;
+        }
+        var items = data.items || [];
+        // 관리위원이 "소유자 전용"/"관리위원 전용"을 선택했으면 그 구분에 안 맞는 항목은 숨김
+        // (분류 안 된 항목은 그대로 노출). 소유자(O)는 이 필터 자체를 안 탐(viewCat이 항상 없음).
+        if (role === "A" && viewCat) {
+          items = items.filter(function (it) { return !it.category || it.category === viewCat; });
+        }
+        listCache[key] = items;
+        return true;
+      });
+  }
+
+  function loadCurrent() {
+    var area = document.getElementById("fileListArea");
+    var keys = ["root"].concat(pathStack.map(function (p) { return p.id; }));
+    var currentKey = keys[keys.length - 1];
+    if (keys.every(function (k) { return listCache[k]; })) { renderAll(); return; }
+
+    renderNav();
+    area.innerHTML = '<p class="file-state">불러오는 중...</p>';
+    Promise.all(keys.map(fetchList))
+      .then(function (results) {
+        // 응답 오는 사이 다른 폴더로 이동했으면 화면은 건드리지 않음
+        if (keyOf(pathStack[pathStack.length - 1]) !== currentKey) return;
+        if (!results[results.length - 1]) {
           area.innerHTML = '<p class="file-state">접근할 수 없는 폴더입니다.</p>';
           return;
         }
-        renderItems(data.items);
+        renderAll();
       })
       .catch(function () {
         area.innerHTML = '<p class="file-state">목록을 불러오지 못했습니다. 새로고침 해주세요.</p>';
       });
   }
 
-  function renderItems(items) {
-    var area = document.getElementById("fileListArea");
-    // 관리위원이 "소유자 전용"/"관리위원 전용"을 선택했으면 그 구분에 안 맞는 항목은 숨김
-    // (분류 안 된 항목은 그대로 노출). 소유자(O)는 이 필터 자체를 안 탐(viewCat이 항상 없음).
-    if (role === "A" && viewCat && items) {
-      items = items.filter(function (it) { return !it.category || it.category === viewCat; });
+  function renderAll() {
+    renderNav();
+    renderItems(listCache[keyOf(pathStack[pathStack.length - 1])]);
+  }
+
+  function renderNav() {
+    renderPathBar();
+    renderMenu();
+    renderMoNav();
+  }
+
+  // PC: 탐색기 주소창처럼 [↑ 상위 폴더] 🏠 소유자 라운지 › A › B
+  function renderPathBar() {
+    var bar = document.getElementById("pathBar");
+    var html = '<button type="button" class="btn-up"' + (pathStack.length ? "" : " disabled") + '>↑ 상위 폴더</button><div class="crumbs">';
+    html += '<button type="button" class="crumb' + (pathStack.length ? "" : " current") + '" data-idx="-1">🏠 ' + LOUNGE_TITLE + '</button>';
+    pathStack.forEach(function (p, idx) {
+      var cur = idx === pathStack.length - 1;
+      html += '<span class="crumb-sep">›</span><button type="button" class="crumb' + (cur ? " current" : "") + '" data-idx="' + idx + '">' + esc(p.name) + '</button>';
+    });
+    bar.innerHTML = html + "</div>";
+    bar.querySelector(".btn-up").addEventListener("click", goUp);
+    bar.querySelectorAll(".crumb:not(.current)").forEach(function (el) {
+      el.addEventListener("click", function () {
+        var idx = parseInt(el.getAttribute("data-idx"), 10);
+        goTo(pathStack.slice(0, idx + 1));
+      });
+    });
+  }
+
+  // PC: 1단 = 최상위 폴더(상단 메뉴), 2단 이하 = 선택한 폴더의 하위 폴더(하위 메뉴 줄)
+  // 경로의 각 단계마다 한 줄씩 그려서, 하위로 들어가도 형제 폴더로 바로 옮겨갈 수 있게 함
+  function renderMenu() {
+    var menu = document.getElementById("menuArea");
+    menu.innerHTML = "";
+    for (var level = 0; level <= pathStack.length; level++) {
+      var parentKey = level === 0 ? "root" : pathStack[level - 1].id;
+      var folders = foldersOf(parentKey);
+      if (!folders.length) continue;
+      var active = pathStack[level];
+      var row = document.createElement("div");
+      row.className = level === 0 ? "menu-row-main" : "menu-row-sub";
+      if (level > 0) row.innerHTML = '<span class="sub-label">' + esc(pathStack[level - 1].name) + ' ›</span>';
+      folders.forEach(function (f) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "menu-item" + (active && active.id === f.id ? " active" : "");
+        btn.textContent = f.name;
+        var lv = level;
+        btn.addEventListener("click", function () {
+          if (active && active.id === f.id && pathStack.length === lv + 1) return;
+          goTo(pathStack.slice(0, lv).concat([{ id: f.id, name: f.name }]));
+        });
+        row.appendChild(btn);
+      });
+      menu.appendChild(row);
     }
-    if (!items || items.length === 0) {
-      area.innerHTML = '<p class="file-state">등록된 자료가 없습니다.</p>';
+    menu.style.display = menu.children.length ? "" : "none";
+  }
+
+  // 모바일: 맨 위에 항상 같은 자리의 큰 "이전으로" 버튼 + 지금 어디에 있는지 큰 글씨로
+  function renderMoNav() {
+    var nav = document.getElementById("moNav");
+    if (!pathStack.length) {
+      nav.innerHTML = '<p class="guide">보실 자료를 아래에서 눌러주세요.</p>';
       return;
     }
+    var cur = pathStack[pathStack.length - 1];
+    var parentName = pathStack.length > 1 ? pathStack[pathStack.length - 2].name : LOUNGE_TITLE;
+    nav.innerHTML =
+      '<button type="button" class="btn-back">◀ 이전으로 (' + esc(parentName) + ')</button>' +
+      '<div class="here-label">현재 위치</div>' +
+      '<div class="here-name">📂 ' + esc(cur.name) + '</div>' +
+      '<div class="here-path">' + [LOUNGE_TITLE].concat(pathStack.map(function (p) { return esc(p.name); })).join(" › ") + '</div>';
+    nav.querySelector(".btn-back").addEventListener("click", goUp);
+  }
 
+  function renderItems(items) {
+    var area = document.getElementById("fileListArea");
     var folders = items.filter(function (it) { return it.type === "folder"; });
     var files = items.filter(function (it) { return it.type === "file"; });
     area.innerHTML = "";
 
+    if (!folders.length && !files.length) {
+      area.innerHTML = '<p class="file-state">등록된 자료가 없습니다.</p>';
+      return;
+    }
+    // PC는 하위 폴더가 메뉴 줄에 있으므로 파일이 없으면 안내 문구만
+    if (!files.length) {
+      area.innerHTML = '<p class="file-state only-pc">위 메뉴에서 보실 항목을 선택해 주세요.</p>';
+    }
+
+    // 모바일 전용 큰 메뉴 버튼(PC에서는 CSS로 숨김 — 상단/하위 메뉴가 대신함)
     folders.forEach(function (f) {
-      var row = document.createElement("div");
-      row.className = "file-row folder-row";
-      var badge = f.category ? ('<span class="cat-badge ' + f.category + '">' + (CAT_LABEL[f.category] || f.category) + '</span>') : "";
-      row.innerHTML =
-        '<div class="file-info"><div class="file-name"><span class="folder-icon">📁</span> ' + f.name.replace(/</g, "&lt;") + '</div>' +
-        '<div class="file-meta">' + badge + '</div></div>';
-      row.addEventListener("click", function () {
-        pathStack.push({ id: f.id, name: f.name });
-        loadCurrent();
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "folder-item";
+      btn.innerHTML = '<span class="fi-icon">📁</span><span class="fi-name">' + esc(f.name) + '</span><span class="fi-arrow">›</span>';
+      btn.addEventListener("click", function () {
+        goTo(pathStack.concat([{ id: f.id, name: f.name }]));
       });
-      area.appendChild(row);
+      area.appendChild(btn);
     });
 
     files.forEach(function (f) {
@@ -317,7 +494,7 @@
       var info = document.createElement("div");
       info.className = "file-info";
       info.innerHTML =
-        '<div class="file-name">' + f.name.replace(/</g, "&lt;") + '</div>' +
+        '<div class="file-name">' + esc(f.name) + '</div>' +
         '<div class="file-meta">' + badge + formatDate(f.updated) + '</div>';
 
       var btn = document.createElement("button");
