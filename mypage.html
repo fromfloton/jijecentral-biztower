@@ -174,6 +174,80 @@
   }
 
   .back-home { display: block; text-align: center; margin-top: 2.4rem; font-size: 2.34rem; color: #999; }
+
+  /* ── 새 자료 N 표시 (업로드·수정 후 이 호실이 아직 안 누른 파일, 그런 파일이 든 폴더) ── */
+  .n-mark {
+    display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;
+    min-width: 1.5em; height: 1.5em; padding: 0 .3em; margin-left: .5em; border-radius: .3em;
+    background: #e0452b; color: #fff; font-size: .62em; font-weight: 700; line-height: 1; vertical-align: .15em;
+  }
+
+  /* ── 사진 격자: PC 5열×2줄(10장), 모바일 2열×4줄(8장) + 더보기 ── */
+  .photo-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2.4rem 2rem; padding: 1.2rem 0 2.4rem; }
+  .photo-card { background: none; border: 0; padding: 0; text-align: left; cursor: pointer; min-width: 0; font: inherit; }
+  .photo-card .ph-img {
+    position: relative; aspect-ratio: 4 / 3; border-radius: .6rem; overflow: hidden;
+    background: #efedea; display: flex; align-items: center; justify-content: center;
+  }
+  .photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .2s ease; }
+  .photo-card:hover img { transform: scale(1.04); }
+  .photo-card .ph-wait { font-size: 1.9rem; color: #a59d96; text-align: center; line-height: 1.5; }
+  .photo-card .ph-img .n-mark { position: absolute; top: .8rem; left: .8rem; margin: 0; font-size: 1.8rem; }
+  .photo-card .ph-name {
+    margin-top: 1rem; font-size: 2.1rem; color: #222; line-height: 1.4; word-break: break-all;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .photo-card .ph-date { margin-top: .2rem; font-size: 1.9rem; color: #999; }
+  .btn-more {
+    display: block; width: 100%; max-width: 48rem; margin: 0 auto 2.4rem; background: #fff; color: #242750;
+    border: 2px solid #242750; border-radius: .8rem; font-size: 2.4rem; font-weight: 600; padding: 1.6rem; cursor: pointer;
+  }
+  .btn-more:hover { background: #f3f3f8; }
+  .btn-more .cnt { font-weight: 400; color: #777; }
+  .doc-heading { font-size: 2.2rem; color: #888; margin-top: 1.2rem; padding-bottom: .4rem; border-bottom: 1px solid #eee; }
+
+  /* ── 크게 보기 ── */
+  .viewer { position: fixed; inset: 0; z-index: 1000; background: #111218; display: flex; flex-direction: column; }
+  .viewer[hidden] { display: none; }
+  .viewer .vw-top { display: flex; align-items: center; justify-content: space-between; padding: 1.6rem 2rem; color: #ddd; font-size: 2.2rem; }
+  .viewer .vw-close {
+    background: rgba(255,255,255,.14); color: #fff; border: 0; border-radius: .8rem; cursor: pointer;
+    font-size: 2.4rem; font-weight: 600; padding: 1.2rem 2.4rem;
+  }
+  .viewer .vw-stage { position: relative; flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 0 9rem; }
+  .viewer .vw-img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+  .viewer .vw-img.blur { filter: blur(6px); opacity: .7; }
+  .viewer .vw-msg { position: absolute; left: 0; right: 0; bottom: 2rem; text-align: center; color: #fff; font-size: 2.2rem; }
+  .viewer .vw-msg:empty { display: none; }
+  .viewer .vw-nav {
+    position: absolute; top: 50%; transform: translateY(-50%); width: 7rem; height: 7rem; border-radius: 50%;
+    background: rgba(255,255,255,.16); color: #fff; border: 0; font-size: 2.8rem; cursor: pointer;
+  }
+  .viewer .vw-nav:hover:not(:disabled) { background: rgba(255,255,255,.3); }
+  .viewer .vw-nav:disabled { opacity: .25; cursor: default; }
+  .viewer .vw-prev { left: 1.2rem; }
+  .viewer .vw-next { right: 1.2rem; }
+  .viewer .vw-bottom { display: flex; align-items: center; justify-content: center; gap: 2.4rem; padding: 1.6rem 2rem 2.4rem; }
+  .viewer .vw-name { color: #fff; font-size: 2.2rem; word-break: break-all; text-align: center; }
+
+  @media (max-width: 767px) {
+    .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 1.2rem; }
+    .photo-card .ph-name { font-size: 1.8rem; }
+    .photo-card .ph-date { font-size: 1.6rem; }
+    .photo-card .ph-img .n-mark { font-size: 1.7rem; }
+    .btn-more { min-height: 5.8rem; font-size: 2rem; max-width: none; }
+    .doc-heading { font-size: 1.8rem; }
+    .folder-item .fi-name .n-mark { font-size: .8em; }
+    .viewer .vw-top { font-size: 1.8rem; padding: 1.2rem 1.6rem; }
+    .viewer .vw-close { font-size: 2rem; padding: 1.2rem 2rem; min-height: 5.2rem; }
+    .viewer .vw-stage { padding: 0; }
+    .viewer .vw-nav { width: 5.2rem; height: 5.2rem; font-size: 2.2rem; background: rgba(0,0,0,.35); }
+    .viewer .vw-prev { left: .6rem; }
+    .viewer .vw-next { right: .6rem; }
+    .viewer .vw-bottom { flex-direction: column; gap: 1.2rem; padding: 1.2rem 1.6rem 2rem; }
+    .viewer .vw-name { font-size: 1.8rem; }
+    .viewer .btn-download { width: 100%; }
+  }
 </style>
 </head>
 <body>
@@ -219,6 +293,17 @@
 
     <a class="back-home" href="index.html">← 홈으로 돌아가기</a>
   </div>
+</div>
+
+<div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="사진 크게 보기">
+  <div class="vw-top"><span class="vw-count" id="vwCount"></span><button type="button" class="vw-close" id="vwClose">✕ 닫기</button></div>
+  <div class="vw-stage" id="vwStage">
+    <img class="vw-img" id="vwImg" alt="" />
+    <p class="vw-msg" id="vwMsg"></p>
+    <button type="button" class="vw-nav vw-prev" id="vwPrev" aria-label="이전 사진">◀</button>
+    <button type="button" class="vw-nav vw-next" id="vwNext" aria-label="다음 사진">▶</button>
+  </div>
+  <div class="vw-bottom"><div class="vw-name" id="vwName"></div><button type="button" class="btn-download" id="vwDownload">원본 다운로드</button></div>
 </div>
 
 <div class="reservation-fixed-wrap" id="reservationFixedWrap"><a aria-label="전화 문의 031-653-1588" class="btn btn-call-fab" href="tel:031-653-1588"><i aria-hidden="true" class="ico ico-btn-call-fab"></i><span class="btn-txt">031-653-1588</span></a><a aria-label="카카오톡 상담" class="btn btn-kakao-fab" href="http://pf.kakao.com/_FUPrX" target="_blank" rel="noopener"><i aria-hidden="true" class="ico ico-btn-kakao-fab"></i><span class="btn-txt">카카오톡 상담</span></a></div>
@@ -331,7 +416,13 @@
   }
   window.addEventListener("popstate", function (e) {
     if (filePanel.style.display === "none") return; // 구분 선택 화면에서는 무시
-    pathStack = (e.state && e.state.loungePath) || [];
+    var newPath = (e.state && e.state.loungePath) || [];
+    // 크게 보기가 열려 있으면 기기 "뒤로" = 크게 보기 닫기(같은 폴더면 목록은 다시 그리지 않음)
+    if (!viewer.hidden) {
+      hideViewer();
+      if (JSON.stringify(newPath) === JSON.stringify(pathStack)) return;
+    }
+    pathStack = newPath;
     loadCurrent();
   });
 
@@ -429,7 +520,7 @@
         var btn = document.createElement("button");
         btn.type = "button";
         btn.className = "menu-item" + (active && active.id === f.id ? " active" : "");
-        btn.textContent = f.name;
+        btn.innerHTML = esc(f.name) + nMark(f);
         var lv = level;
         btn.addEventListener("click", function () {
           if (active && active.id === f.id && pathStack.length === lv + 1) return;
@@ -479,14 +570,25 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "folder-item";
-      btn.innerHTML = '<span class="fi-icon">📁</span><span class="fi-name">' + esc(f.name) + '</span><span class="fi-arrow">›</span>';
+      btn.innerHTML = '<span class="fi-icon">📁</span><span class="fi-name">' + esc(f.name) + nMark(f) + '</span><span class="fi-arrow">›</span>';
       btn.addEventListener("click", function () {
         goTo(pathStack.concat([{ id: f.id, name: f.name }]));
       });
       area.appendChild(btn);
     });
 
-    files.forEach(function (f) {
+    // 사진은 썸네일 격자로, 그 외 문서는 기존 목록으로
+    var images = files.filter(isImage);
+    var docs = files.filter(function (f) { return !isImage(f); });
+    if (images.length) renderGallery(area, images);
+    if (images.length && docs.length) {
+      var h = document.createElement("p");
+      h.className = "doc-heading";
+      h.textContent = "문서";
+      area.appendChild(h);
+    }
+
+    docs.forEach(function (f) {
       var row = document.createElement("div");
       row.className = "file-row";
       var badge = f.category ? ('<span class="cat-badge ' + f.category + '">' + (CAT_LABEL[f.category] || f.category) + '</span>') : "";
@@ -494,13 +596,13 @@
       var info = document.createElement("div");
       info.className = "file-info";
       info.innerHTML =
-        '<div class="file-name">' + esc(f.name) + '</div>' +
+        '<div class="file-name">' + esc(f.name) + nMark(f) + '</div>' +
         '<div class="file-meta">' + badge + formatDate(f.updated) + '</div>';
 
       var btn = document.createElement("button");
       btn.className = "btn-download";
       btn.textContent = "다운로드";
-      btn.addEventListener("click", function () { downloadFile(f.id, btn); });
+      btn.addEventListener("click", function () { downloadFile(f, btn); });
 
       row.appendChild(info);
       row.appendChild(btn);
@@ -508,10 +610,193 @@
     });
   }
 
-  function downloadFile(fileId, btn) {
+  // ── 새 자료 N ──
+  function nMark(item) {
+    return item.isNew ? '<span class="n-mark" data-new-id="' + esc(item.id) + '" aria-label="새 자료">N</span>' : "";
+  }
+  // 누른 즉시 화면에서 N 제거(서버 기록은 크게 보기/다운로드 요청 때 함께 저장됨).
+  // 지금 폴더에 남은 새 자료가 없으면 경로상의 상위 폴더 메뉴 N도 같이 끔
+  function markLocalRead(f) {
+    if (!f.isNew) return;
+    f.isNew = false;
+    document.querySelectorAll('[data-new-id="' + f.id + '"]').forEach(function (el) { el.remove(); });
+    for (var i = pathStack.length - 1; i >= 0; i--) {
+      var own = listCache[pathStack[i].id];
+      if (!own || own.some(function (it) { return it.isNew; })) break;
+      var parentKey = i === 0 ? "root" : pathStack[i - 1].id;
+      (listCache[parentKey] || []).forEach(function (it) { if (it.id === pathStack[i].id) it.isNew = false; });
+    }
+    renderNav();
+  }
+
+  // ── 사진 격자 + 더보기 ──
+  var thumbCache = {};   // 파일ID -> data URL, 또는 "none"(썸네일 없음/실패)
+  var galleryShown = {}; // 폴더키 -> 지금까지 펼친 장수(뒤로 돌아와도 유지)
+  var mqMobile = window.matchMedia("(max-width: 767px)");
+
+  function isImage(f) { return /^image\//.test(f.mimeType || ""); }
+  function pageSize() { return mqMobile.matches ? 8 : 10; } // 모바일 2열×4줄, PC 5열×2줄
+  function currentKey() { return keyOf(pathStack[pathStack.length - 1]); }
+
+  function renderGallery(area, images) {
+    var key = currentKey();
+    var shown = Math.min(images.length, galleryShown[key] || pageSize());
+    galleryShown[key] = shown;
+
+    var grid = document.createElement("div");
+    grid.className = "photo-grid";
+    images.slice(0, shown).forEach(function (f, idx) {
+      var card = document.createElement("button");
+      card.type = "button";
+      card.className = "photo-card";
+      card.innerHTML =
+        '<div class="ph-img" data-thumb-id="' + esc(f.id) + '">' + thumbHtml(f) + nMark(f) + '</div>' +
+        '<div class="ph-name">' + esc(f.name) + '</div>' +
+        '<div class="ph-date">' + formatDate(f.updated) + '</div>';
+      card.addEventListener("click", function () { openViewer(images, idx); });
+      grid.appendChild(card);
+    });
+    area.appendChild(grid);
+
+    if (shown < images.length) {
+      var more = document.createElement("button");
+      more.type = "button";
+      more.className = "btn-more";
+      more.innerHTML = '더보기 <span class="cnt">(' + shown + ' / ' + images.length + '장)</span>';
+      more.addEventListener("click", function () {
+        galleryShown[key] = Math.min(images.length, shown + pageSize());
+        renderItems(listCache[key]);
+      });
+      area.appendChild(more);
+    }
+    loadThumbs(key, images.slice(0, shown));
+  }
+
+  function thumbHtml(f) {
+    var t = thumbCache[f.id];
+    if (t && t !== "none") return '<img src="' + t + '" alt="" />';
+    if (t === "none" || f.hasThumb === false) return '<span class="ph-wait">🖼<br>준비 중</span>';
+    return '<span class="ph-wait">불러오는 중</span>';
+  }
+
+  // 화면에 펼친 사진 중 아직 없는 썸네일만 한 번에 요청(더보기 1회 = 요청 1회)
+  function loadThumbs(key, images) {
+    var need = images.filter(function (f) { return !thumbCache[f.id] && f.hasThumb !== false; });
+    if (!need.length) return;
+    var ids = need.map(function (f) { return f.id; });
+    ids.forEach(function (id) { thumbCache[id] = "loading"; });
+    callApi({ action: "thumbs", token: token, folderId: key === "root" ? null : key, fileIds: ids })
+      .then(function (data) { return (data && data.success && data.thumbs) || {}; })
+      .catch(function () { return {}; })
+      .then(function (thumbs) {
+        need.forEach(function (f) {
+          var t = thumbs[f.id];
+          thumbCache[f.id] = t ? ("data:" + t.mimeType + ";base64," + t.base64) : "none";
+          document.querySelectorAll('[data-thumb-id="' + f.id + '"]').forEach(function (box) {
+            var mark = box.querySelector(".n-mark");
+            box.innerHTML = thumbHtml(f);
+            if (mark) box.appendChild(mark);
+          });
+        });
+      });
+  }
+
+  // ── 크게 보기(1600px) — 좌우 넘기기, 기기 뒤로가기로 닫기, 원본 다운로드 ──
+  var viewer = document.getElementById("viewer");
+  var vwImg = document.getElementById("vwImg");
+  var vwMsg = document.getElementById("vwMsg");
+  var vwList = [], vwIdx = 0, vwFolder = null;
+  var previewCache = {};
+
+  function openViewer(images, idx) {
+    vwList = images;
+    vwFolder = currentKey();
+    viewer.hidden = false;
+    document.documentElement.style.overflow = document.body.style.overflow = "hidden";
+    history.pushState({ loungePath: pathStack, viewer: true }, "");
+    showViewerAt(idx);
+  }
+  function hideViewer() {
+    viewer.hidden = true;
+    document.documentElement.style.overflow = document.body.style.overflow = "";
+    vwImg.removeAttribute("src");
+  }
+  function closeViewer() {
+    if (!viewer.hidden) history.back(); // popstate에서 hideViewer
+  }
+
+  function showViewerAt(idx) {
+    vwIdx = idx;
+    var f = vwList[idx];
+    document.getElementById("vwCount").textContent = (idx + 1) + " / " + vwList.length;
+    document.getElementById("vwName").textContent = f.name;
+    document.getElementById("vwPrev").disabled = idx === 0;
+    document.getElementById("vwNext").disabled = idx === vwList.length - 1;
+    markLocalRead(f);
+
+    if (previewCache[f.id]) {
+      vwImg.className = "vw-img";
+      vwImg.src = previewCache[f.id];
+      vwMsg.textContent = "";
+      return;
+    }
+    // 큰 사진이 오는 동안 썸네일을 흐리게 먼저 보여줌
+    var t = thumbCache[f.id];
+    if (t && t.indexOf("data:") === 0) { vwImg.className = "vw-img blur"; vwImg.src = t; }
+    else { vwImg.className = "vw-img"; vwImg.removeAttribute("src"); }
+    vwMsg.textContent = "사진을 불러오는 중...";
+    callApi({ action: "preview", token: token, folderId: vwFolder === "root" ? null : vwFolder, fileId: f.id })
+      .then(function (data) {
+        if (!data.success) throw new Error(data.message || "fail");
+        previewCache[f.id] = "data:" + data.mimeType + ";base64," + data.base64;
+        if (viewer.hidden || vwList[vwIdx] !== f) return; // 그사이 다른 사진으로 넘겼으면 무시
+        vwImg.className = "vw-img";
+        vwImg.src = previewCache[f.id];
+        vwMsg.textContent = "";
+      })
+      .catch(function () {
+        if (viewer.hidden || vwList[vwIdx] !== f) return;
+        vwMsg.textContent = "크게 보기를 불러오지 못했습니다. 아래 [원본 다운로드]를 이용해 주세요.";
+      });
+  }
+  function viewerStep(d) {
+    var n = vwIdx + d;
+    if (n >= 0 && n < vwList.length) showViewerAt(n);
+  }
+
+  document.getElementById("vwClose").addEventListener("click", closeViewer);
+  document.getElementById("vwPrev").addEventListener("click", function () { viewerStep(-1); });
+  document.getElementById("vwNext").addEventListener("click", function () { viewerStep(1); });
+  document.getElementById("vwDownload").addEventListener("click", function () {
+    downloadFile(vwList[vwIdx], this, "원본 다운로드");
+  });
+  document.addEventListener("keydown", function (e) {
+    if (viewer.hidden) return;
+    if (e.key === "Escape") closeViewer();
+    else if (e.key === "ArrowLeft") viewerStep(-1);
+    else if (e.key === "ArrowRight") viewerStep(1);
+  });
+  // 모바일: 한 손가락으로 좌우로 밀면 이전/다음(두 손가락 확대 중에는 넘기지 않음)
+  var touchX = null, touchY = 0;
+  var vwStage = document.getElementById("vwStage");
+  vwStage.addEventListener("touchstart", function (e) {
+    var zoomed = window.visualViewport && window.visualViewport.scale > 1.01;
+    touchX = (e.touches.length === 1 && !zoomed) ? e.touches[0].clientX : null;
+    touchY = e.touches[0].clientY;
+  }, { passive: true });
+  vwStage.addEventListener("touchend", function (e) {
+    if (touchX === null || !e.changedTouches.length) return;
+    var dx = e.changedTouches[0].clientX - touchX, dy = e.changedTouches[0].clientY - touchY;
+    touchX = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) viewerStep(dx < 0 ? 1 : -1);
+  }, { passive: true });
+
+  function downloadFile(f, btn, label) {
+    label = label || "다운로드";
+    markLocalRead(f);
     btn.disabled = true;
     btn.textContent = "받는 중...";
-    callApi({ action: "download", token: token, fileId: fileId })
+    callApi({ action: "download", token: token, fileId: f.id })
       .then(function (data) {
         if (!data.success) {
           alert("다운로드에 실패했습니다.");
@@ -532,7 +817,7 @@
       })
       .finally(function () {
         btn.disabled = false;
-        btn.textContent = "다운로드";
+        btn.textContent = label;
       });
   }
 
