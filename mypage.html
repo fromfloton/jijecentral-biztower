@@ -399,6 +399,10 @@
   var pathStack = []; // [{id, name}, ...] 현재 들어와 있는 폴더 경로
   var listCache = {};  // folderId("root"=최상위) -> 필터 적용된 items. 상단/하위 메뉴를 다시 그릴 때 재요청 안 하려고 보관
   var LOUNGE_TITLE = "소유자 라운지";
+  var noDlFolderId = ""; // 기밀 사항 폴더(시트 permission에 등록) — 이 폴더 안에서는 다운로드 버튼 없음
+  function isNoDownload() {
+    return !!noDlFolderId && pathStack.some(function (p) { return p.id === noDlFolderId; });
+  }
 
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); }
   function keyOf(folder) { return folder ? folder.id : "root"; }
@@ -439,6 +443,7 @@
           }
           return false;
         }
+        if (data.noDownloadFolderId) noDlFolderId = data.noDownloadFolderId;
         var items = data.items || [];
         // 관리위원이 "소유자 전용"/"관리위원 전용"을 선택했으면 그 구분에 안 맞는 항목은 숨김
         // (분류 안 된 항목은 그대로 노출). 소유자(O)는 이 필터 자체를 안 탐(viewCat이 항상 없음).
@@ -588,6 +593,7 @@
       area.appendChild(h);
     }
 
+    var noDl = isNoDownload();
     docs.forEach(function (f) {
       var row = document.createElement("div");
       row.className = "file-row";
@@ -599,13 +605,14 @@
         '<div class="file-name">' + esc(f.name) + nMark(f) + '</div>' +
         '<div class="file-meta">' + badge + formatDate(f.updated) + '</div>';
 
-      var btn = document.createElement("button");
-      btn.className = "btn-download";
-      btn.textContent = "다운로드";
-      btn.addEventListener("click", function () { downloadFile(f, btn); });
-
       row.appendChild(info);
-      row.appendChild(btn);
+      if (!noDl) {
+        var btn = document.createElement("button");
+        btn.className = "btn-download";
+        btn.textContent = "다운로드";
+        btn.addEventListener("click", function () { downloadFile(f, btn); });
+        row.appendChild(btn);
+      }
       area.appendChild(row);
     });
   }
@@ -705,12 +712,14 @@
   var viewer = document.getElementById("viewer");
   var vwImg = document.getElementById("vwImg");
   var vwMsg = document.getElementById("vwMsg");
-  var vwList = [], vwIdx = 0, vwFolder = null;
+  var vwList = [], vwIdx = 0, vwFolder = null, vwNoDl = false;
   var previewCache = {};
 
   function openViewer(images, idx) {
     vwList = images;
     vwFolder = currentKey();
+    vwNoDl = isNoDownload();
+    document.getElementById("vwDownload").hidden = vwNoDl;
     viewer.hidden = false;
     document.documentElement.style.overflow = document.body.style.overflow = "hidden";
     history.pushState({ loungePath: pathStack, viewer: true }, "");
@@ -756,7 +765,8 @@
       })
       .catch(function () {
         if (viewer.hidden || vwList[vwIdx] !== f) return;
-        vwMsg.textContent = "크게 보기를 불러오지 못했습니다. 아래 [원본 다운로드]를 이용해 주세요.";
+        vwMsg.textContent = vwNoDl ? "크게 보기를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요."
+                                   : "크게 보기를 불러오지 못했습니다. 아래 [원본 다운로드]를 이용해 주세요.";
       });
   }
   function viewerStep(d) {

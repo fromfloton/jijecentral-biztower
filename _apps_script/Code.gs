@@ -14,6 +14,7 @@ var READS_SHEET = 'reads';   // 읽음 기록 시트: 읽은 주체 | 파일ID |
 var FOLDER_MIME = 'application/vnd.google-apps.folder';
 var FILE_FIELDS = 'id,name,mimeType,createdTime,modifiedTime,md5Checksum,size,thumbnailLink,parents';
 var DAY_MS = 24 * 60 * 60 * 1000;
+var NO_DOWNLOAD_KEY = '기밀사항'; // permission 시트 A열에 '기밀사항'(띄어쓰기 무관) + B열에 폴더ID → 그 폴더(하위 포함)는 화면에 다운로드 버튼 없음
 
 function doPost(e) {
   var body = JSON.parse(e.postData.contents);
@@ -87,7 +88,7 @@ function getFolderMap() {
   var data = sheet.getDataRange().getValues();
   var map = {};
   for (var i = 0; i < data.length; i++) {
-    var roleName = String(data[i][0]).trim().toUpperCase();
+    var roleName = String(data[i][0]).replace(/\s/g, '').toUpperCase();
     var folderId = String(data[i][1]).trim();
     if (roleName) map[roleName] = folderId;
   }
@@ -148,7 +149,8 @@ function fileState(f, parentId) {
 // parentOf: 라운지 안 모든 폴더의 상위 폴더, recent: 최근 NEW_DAYS일 안에 올라오거나 바뀐 파일
 // → 폴더 메뉴에 N(안에 새 자료 있음) 표시 + 폴더 접근 권한 확인을 Drive 재귀 조회 없이 처리
 function getTreeIndex(folderMap) {
-  var rootIds = Object.keys(folderMap).map(function (r) { return folderMap[r]; }).filter(Boolean).sort();
+  var rootIds = Object.keys(folderMap).filter(function (r) { return r !== NO_DOWNLOAD_KEY; })
+    .map(function (r) { return folderMap[r]; }).filter(Boolean).sort();
   var cacheKey = 'tree_' + Utilities.base64EncodeWebSafe(rootIds.join(',')).slice(0, 200);
   var raw = CacheService.getScriptCache().get(cacheKey);
   if (raw) return JSON.parse(raw);
@@ -333,13 +335,13 @@ function handleList(body) {
       if (!fid) return;
       items = items.concat(listFolderContents(fid, r, reads, newFolders));
     });
-    return jsonOutput({ success: true, items: items });
+    return jsonOutput({ success: true, items: items, noDownloadFolderId: folderMap[NO_DOWNLOAD_KEY] || '' });
   }
 
   if (!isAllowedFolderFast(folderId, allowedFolderIds, index)) {
     return jsonOutput({ success: false, message: 'forbidden' });
   }
-  return jsonOutput({ success: true, items: listFolderContents(folderId, null, reads, newFolders) });
+  return jsonOutput({ success: true, items: listFolderContents(folderId, null, reads, newFolders), noDownloadFolderId: folderMap[NO_DOWNLOAD_KEY] || '' });
 }
 
 // ── 썸네일 / 크게 보기 ──
