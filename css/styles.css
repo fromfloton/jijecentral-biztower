@@ -674,6 +674,8 @@ a.gnb-link-4:focus .gnb-tit-4, a.gnb-link-4:hover .gnb-tit-4 {text-decoration:un
 .footer-menu-chain-cont .footer-menu-row span:after {content:"";display:inline-block;vertical-align:middle;margin:-.2rem .6rem 0 .8rem;width:1px;height:1.2rem;background-color:#999}
 .footer-menu-chain-cont .footer-menu-row span:last-child:after {display:none}
 .footer-swiper-wrap {width:100%;display:flex;display:inline-block;align-items:center;justify-content:space-between}
+/* 2026-11-09 PC 푸터 하단 브랜드 로고(롯데 템플릿 잔재)·화살표 삭제 — 빈 영역 높이는 기존(로고 있을 때 ≈37~39px) 유지 */
+@media (min-width:768px) { .footer-swiper-wrap {min-height:38.5px;vertical-align:top} }
 .footer-swiper-wrap .footer-link-tit {display:block}
 .footer-family-wrap {position:relative}
 .footer-family-wrap .btn {justify-content:space-between;padding-bottom:1.2rem;border-bottom:1px solid #fff}
