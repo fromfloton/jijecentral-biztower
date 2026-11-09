@@ -1653,6 +1653,10 @@ body.menu-open { overflow: hidden; }
    모바일 전용 오버라이드
    ========================================================= */
 @media (max-width: 767px) {
+  /* 모바일: 메인 히어로 1번째 영상 슬라이드 숨김 → 2번째 이미지부터 시작
+     (js/main.js initHeroSwiper에서 슬라이드 목록에서도 제외) */
+  .chain-ma-wrap .component-swiper.swiper-main-kv .swiper-slide-video { display: none !important; }
+
   /* 히어로 높이: 고정값(120vw) 대신, 화면 높이에서 공지사항·하단탭바를
      제외한 나머지 전부를 채우도록 flex로 전환 (기종별 화면비 대응) */
   main#content {

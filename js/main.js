@@ -167,6 +167,19 @@
     if (!wrapper || slides.length === 0) return;
 
     var videoEl = root.querySelector("#heroVideo");
+
+    // 영상 파일 주소는 HTML에 data-src로만 두고(src 없음, preload=none) 여기서 PC일 때만 연결.
+    // 모바일: 영상 슬라이드는 CSS로 display:none + 슬라이드 목록에서도 제외 →
+    // 이미지(2번째)가 바로 첫 화면, 영상 파일은 아예 요청하지 않음.
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      slides = slides.filter(function (s) { return !s.classList.contains("swiper-slide-video"); });
+      videoEl = null;
+    } else if (videoEl && videoEl.dataset.src) {
+      videoEl.muted = true;
+      videoEl.preload = "auto";
+      videoEl.src = videoEl.dataset.src;
+    }
+
     var videoSlideIndex = slides.findIndex(function (s) { return s.classList.contains("swiper-slide-video"); });
 
     var current = slides.findIndex(function (s) { return s.classList.contains("swiper-slide-active"); });
@@ -291,6 +304,20 @@
 
     render();
     play();
+  })();
+
+  /* ---------------------------------------------------------
+   * 8-1. featured(#premium) 섹션 영상 — 이 섹션은 모바일에서 display:none이라
+   *      모바일에선 영상 파일(18.6MB)을 아예 요청하지 않고, PC일 때만 연결·재생
+   * ------------------------------------------------------- */
+  (function initFeaturedVideo() {
+    var v = document.querySelector("video.featured-video[data-src]");
+    if (!v || window.matchMedia("(max-width: 767px)").matches) return;
+    v.muted = true;
+    v.preload = "auto";
+    v.src = v.dataset.src;
+    var p = v.play();
+    if (p && p.catch) p.catch(function () { /* 자동재생 실패 시 무시 */ });
   })();
 
   /* ---------------------------------------------------------
